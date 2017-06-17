@@ -228,6 +228,46 @@ class NoneLabeledClosedStatementNode(Node):
     def __str__(self):
         return "non_labeled_closed_statement"
 
+# 添加对case的文法支持
+class CaseStatementNode(Node):
+    def __init__(self, case_index, case_element_list):
+        self.case_index = case_index
+        self.case_element_list = case_element_list
+
+    @property
+    def children(self):
+        return [self.case_index, self.case_element_list]
+
+    def __str__(self):
+        return "case_statement"
+
+class CaseElementListNode(Node):
+    def __init__(self, case_element, case_element_list = None):
+        self._children = list()
+        if case_element_list:
+            self._children.extend(case_element_list._children)
+        self._children.append(case_element)
+
+    @property
+    def children(self):
+        return self._children
+
+    def __str__(self):
+        return "case_element_list"
+
+class CaseElementNode(Node):
+    def __init__(self, case_constant, Statement):
+        self.case_constant = case_constant
+        self.case_statement = Statement
+
+    @property
+    def children(self):
+        return [self.case_constant, self.case_statement]
+
+    def __str__(self):
+        return "case_element"
+
+
 class IfNode(Node):
     def __init__(self, BoolExpr, true_statement, false_statement = None):
         self.BoolExpr = BoolExpr

@@ -1,3 +1,15 @@
+# 2017.6.17 增加对case语句的支持
+
+case_statement : CASE case_index OF case_element_list END
+			   | CASE case_index OF case_element_list SEMICOLON END
+
+case_index 	   : Expr
+
+case_element_list: case_element_list ';' case_element | case_element
+case_element   : case_constant ':' Statement
+case_constant  : Const
+
+
 # 2017.6.17 修改变量定义（VarDef）部分，添加数组文法
 VarDef:         Var VarDefList ';'
 VarDefList:     VarDefList ';' VarDefState | VarDefState

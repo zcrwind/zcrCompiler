@@ -370,10 +370,53 @@ def p_non_labeled_closed_statement_7(p):
     'non_labeled_closed_statement : empty'
     pass
 
-# [暂时没实现case]
-# def p_non_labeled_closed_statement_8(p):
-#     'non_labeled_closed_statement : case_statement'
-#     p[0] = NoneLabeledClosedStatementNode(p[1], statement_type.caseStat)
+
+# 增加对case的文法支持
+def p_non_labeled_closed_statement_8(p):
+    'non_labeled_closed_statement : case_statement'
+    p[0] = NoneLabeledClosedStatementNode(p[1], statement_type.caseStat)
+
+# case_statement : CASE case_index OF case_element_list END
+#                | CASE case_index OF case_element_list ';' END
+
+# case_index     : Expr
+# case_element_list: case_element_list ';' case_element | case_element
+# case_element   : case_constant ':' Statement
+# case_constant  : Const
+
+def p_case_statement_1(p):
+    'case_statement : CASE case_index OF case_element_list END'
+    p[0] = CaseStatementNode(p[2], p[4])
+    p[0].pos_info = getPosition(p, 0)
+
+def p_case_statement_2(p):
+    'case_statement : CASE case_index OF case_element_list SEMICOLON END'
+    p[0] = CaseStatementNode(p[2], p[4])
+    p[0].pos_info = getPosition(p, 0)
+
+def p_case_index(p):
+    'case_index : Expr'
+    p[0] = p[1]
+
+def p_case_element_list_1(p):
+    'case_element_list : case_element_list SEMICOLON case_element'
+    p[0] = CaseElementListNode(p[3], p[1])
+    p[0].pos_info = getPosition(p, 0)
+
+def p_case_element_list_2(p):
+    'case_element_list : case_element'
+    p[0] = CaseElementListNode(p[1])
+    p[0].pos_info = getPosition(p, 0)
+
+def p_case_element(p):
+    'case_element : case_constant COLON Statement'
+    p[0] = CaseElementNode(p[1], p[3])
+    p[0].pos_info = getPosition(p, 0)
+
+def p_case_constant(p):
+    'case_constant : const'
+    p[0] = p[1]
+
 
 def p_open_if_statement_1(p):
     'open_if_statement : IF BoolExpr THEN Statement'
