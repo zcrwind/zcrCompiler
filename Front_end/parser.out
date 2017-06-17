@@ -1,0 +1,3174 @@
+Created by PLY version 3.10 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    LLAVEI
+    LLAVED
+    CASE
+    MOD
+    FUNCTION
+    RETURN
+    CHAR
+    STRING
+    USES
+    CONST
+
+Grammar
+
+Rule 0     S' -> ProgDef
+Rule 1     ProgDef -> PROGRAM ID SEMICOLON SubProg ENDPOINT
+Rule 2     SubProg -> VarDef compound_statement
+Rule 3     VarDef -> VAR VarDefList SEMICOLON
+Rule 4     VarDefList -> VarDefList SEMICOLON VarDefState
+Rule 5     VarDefList -> VarDefState
+Rule 6     VarDefState -> VarList COLON Type
+Rule 7     VarDefState -> ArrayDefState
+Rule 8     VarList -> VarList COMMA Variable
+Rule 9     VarList -> Variable
+Rule 10    ArrayDefState -> TYPE arrayName EQ ARRAY LBRAC index_list RBRAC OF Type
+Rule 11    arrayName -> ID
+Rule 12    index_list -> index_list COMMA index
+Rule 13    index_list -> index
+Rule 14    index -> startIndex DOTDOT endIndex
+Rule 15    Type -> INTEGER
+Rule 16    Type -> REAL
+Rule 17    Type -> BOOLEAN
+Rule 18    Type -> arrayName
+Rule 19    Variable -> ID
+Rule 20    startIndex -> const
+Rule 21    endIndex -> const
+Rule 22    StateList -> StateList SEMICOLON Statement
+Rule 23    StateList -> Statement
+Rule 24    Statement -> open_statement
+Rule 25    Statement -> closed_statement
+Rule 26    open_statement -> label COLON non_labeled_open_statement
+Rule 27    open_statement -> non_labeled_open_statement
+Rule 28    closed_statement -> label COLON non_labeled_closed_statement
+Rule 29    closed_statement -> non_labeled_closed_statement
+Rule 30    non_labeled_open_statement -> open_if_statement
+Rule 31    non_labeled_open_statement -> open_while_statement
+Rule 32    non_labeled_open_statement -> open_for_statement
+Rule 33    non_labeled_closed_statement -> assignment_statement
+Rule 34    non_labeled_closed_statement -> compound_statement
+Rule 35    non_labeled_closed_statement -> closed_if_statement
+Rule 36    non_labeled_closed_statement -> closed_while_statement
+Rule 37    non_labeled_closed_statement -> closed_for_statement
+Rule 38    non_labeled_closed_statement -> goto_statement
+Rule 39    non_labeled_closed_statement -> empty
+Rule 40    open_if_statement -> IF BoolExpr THEN Statement
+Rule 41    open_if_statement -> IF BoolExpr THEN closed_statement ELSE open_statement
+Rule 42    closed_if_statement -> IF BoolExpr THEN closed_statement ELSE closed_statement
+Rule 43    open_while_statement -> WHILE BoolExpr DO open_statement
+Rule 44    closed_while_statement -> WHILE BoolExpr DO closed_statement
+Rule 45    open_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+Rule 46    closed_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+Rule 47    initial_value -> Expr
+Rule 48    final_value -> Expr
+Rule 49    direction -> TO
+Rule 50    direction -> DOWNTO
+Rule 51    assignment_statement -> Variable ASSIGNMENT Expr
+Rule 52    compound_statement -> BEGIN StateList END
+Rule 53    goto_statement -> GOTO label
+Rule 54    label -> DIGSEQ
+Rule 55    Expr -> Expr PLUS Expr
+Rule 56    Expr -> Expr MINUS Expr
+Rule 57    Expr -> Expr TIMES Expr
+Rule 58    Expr -> Expr DIVIDE Expr
+Rule 59    Expr -> LPAREN Expr RPAREN
+Rule 60    Expr -> MINUS Expr
+Rule 61    Expr -> Variable
+Rule 62    Expr -> const
+Rule 63    const -> INT_NUMBER
+Rule 64    const -> REAL_NUMBER
+Rule 65    BoolExpr -> Expr LT Expr
+Rule 66    BoolExpr -> Expr LE Expr
+Rule 67    BoolExpr -> Expr GT Expr
+Rule 68    BoolExpr -> Expr GE Expr
+Rule 69    BoolExpr -> Expr EQ Expr
+Rule 70    BoolExpr -> Expr NE Expr
+Rule 71    BoolExpr -> BoolExpr AND BoolExpr
+Rule 72    BoolExpr -> BoolExpr OR BoolExpr
+Rule 73    BoolExpr -> NOT BoolExpr
+Rule 74    BoolExpr -> LPAREN BoolExpr RPAREN
+Rule 75    BoolExpr -> Expr
+Rule 76    empty -> <empty>
+
+Terminals, with rules where they appear
+
+AND                  : 71
+ARRAY                : 10
+ASSIGNMENT           : 45 46 51
+BEGIN                : 52
+BOOLEAN              : 17
+CASE                 : 
+CHAR                 : 
+COLON                : 6 26 28
+COMMA                : 8 12
+CONST                : 
+DIGSEQ               : 54
+DIVIDE               : 58
+DO                   : 43 44 45 46
+DOTDOT               : 14
+DOWNTO               : 50
+ELSE                 : 41 42
+END                  : 52
+ENDPOINT             : 1
+EQ                   : 10 69
+FOR                  : 45 46
+FUNCTION             : 
+GE                   : 68
+GOTO                 : 53
+GT                   : 67
+ID                   : 1 11 19
+IF                   : 40 41 42
+INTEGER              : 15
+INT_NUMBER           : 63
+LBRAC                : 10
+LE                   : 66
+LLAVED               : 
+LLAVEI               : 
+LPAREN               : 59 74
+LT                   : 65
+MINUS                : 56 60
+MOD                  : 
+NE                   : 70
+NOT                  : 73
+OF                   : 10
+OR                   : 72
+PLUS                 : 55
+PROGRAM              : 1
+RBRAC                : 10
+REAL                 : 16
+REAL_NUMBER          : 64
+RETURN               : 
+RPAREN               : 59 74
+SEMICOLON            : 1 3 4 22
+STRING               : 
+THEN                 : 40 41 42
+TIMES                : 57
+TO                   : 49
+TYPE                 : 10
+USES                 : 
+VAR                  : 3
+WHILE                : 43 44
+error                : 
+
+Nonterminals, with rules where they appear
+
+ArrayDefState        : 7
+BoolExpr             : 40 41 42 43 44 71 71 72 72 73 74
+Expr                 : 47 48 51 55 55 56 56 57 57 58 58 59 60 65 65 66 66 67 67 68 68 69 69 70 70 75
+ProgDef              : 0
+StateList            : 22 52
+Statement            : 22 23 40
+SubProg              : 1
+Type                 : 6 10
+VarDef               : 2
+VarDefList           : 3 4
+VarDefState          : 4 5
+VarList              : 6 8
+Variable             : 8 9 45 46 51 61
+arrayName            : 10 18
+assignment_statement : 33
+closed_for_statement : 37
+closed_if_statement  : 35
+closed_statement     : 25 41 42 42 44 46
+closed_while_statement : 36
+compound_statement   : 2 34
+const                : 20 21 62
+direction            : 45 46
+empty                : 39
+endIndex             : 14
+final_value          : 45 46
+goto_statement       : 38
+index                : 12 13
+index_list           : 10 12
+initial_value        : 45 46
+label                : 26 28 53
+non_labeled_closed_statement : 28 29
+non_labeled_open_statement : 26 27
+open_for_statement   : 32
+open_if_statement    : 30
+open_statement       : 24 41 43 45
+open_while_statement : 31
+startIndex           : 14
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . ProgDef
+    (1) ProgDef -> . PROGRAM ID SEMICOLON SubProg ENDPOINT
+
+    PROGRAM         shift and go to state 2
+
+    ProgDef                        shift and go to state 1
+
+state 1
+
+    (0) S' -> ProgDef .
+
+
+
+state 2
+
+    (1) ProgDef -> PROGRAM . ID SEMICOLON SubProg ENDPOINT
+
+    ID              shift and go to state 3
+
+
+state 3
+
+    (1) ProgDef -> PROGRAM ID . SEMICOLON SubProg ENDPOINT
+
+    SEMICOLON       shift and go to state 4
+
+
+state 4
+
+    (1) ProgDef -> PROGRAM ID SEMICOLON . SubProg ENDPOINT
+    (2) SubProg -> . VarDef compound_statement
+    (3) VarDef -> . VAR VarDefList SEMICOLON
+
+    VAR             shift and go to state 7
+
+    SubProg                        shift and go to state 5
+    VarDef                         shift and go to state 6
+
+state 5
+
+    (1) ProgDef -> PROGRAM ID SEMICOLON SubProg . ENDPOINT
+
+    ENDPOINT        shift and go to state 8
+
+
+state 6
+
+    (2) SubProg -> VarDef . compound_statement
+    (52) compound_statement -> . BEGIN StateList END
+
+    BEGIN           shift and go to state 10
+
+    compound_statement             shift and go to state 9
+
+state 7
+
+    (3) VarDef -> VAR . VarDefList SEMICOLON
+    (4) VarDefList -> . VarDefList SEMICOLON VarDefState
+    (5) VarDefList -> . VarDefState
+    (6) VarDefState -> . VarList COLON Type
+    (7) VarDefState -> . ArrayDefState
+    (8) VarList -> . VarList COMMA Variable
+    (9) VarList -> . Variable
+    (10) ArrayDefState -> . TYPE arrayName EQ ARRAY LBRAC index_list RBRAC OF Type
+    (19) Variable -> . ID
+
+    TYPE            shift and go to state 16
+    ID              shift and go to state 17
+
+    VarDefList                     shift and go to state 11
+    VarDefState                    shift and go to state 12
+    VarList                        shift and go to state 13
+    ArrayDefState                  shift and go to state 14
+    Variable                       shift and go to state 15
+
+state 8
+
+    (1) ProgDef -> PROGRAM ID SEMICOLON SubProg ENDPOINT .
+
+    $end            reduce using rule 1 (ProgDef -> PROGRAM ID SEMICOLON SubProg ENDPOINT .)
+
+
+state 9
+
+    (2) SubProg -> VarDef compound_statement .
+
+    ENDPOINT        reduce using rule 2 (SubProg -> VarDef compound_statement .)
+
+
+state 10
+
+    (52) compound_statement -> BEGIN . StateList END
+    (22) StateList -> . StateList SEMICOLON Statement
+    (23) StateList -> . Statement
+    (24) Statement -> . open_statement
+    (25) Statement -> . closed_statement
+    (26) open_statement -> . label COLON non_labeled_open_statement
+    (27) open_statement -> . non_labeled_open_statement
+    (28) closed_statement -> . label COLON non_labeled_closed_statement
+    (29) closed_statement -> . non_labeled_closed_statement
+    (54) label -> . DIGSEQ
+    (30) non_labeled_open_statement -> . open_if_statement
+    (31) non_labeled_open_statement -> . open_while_statement
+    (32) non_labeled_open_statement -> . open_for_statement
+    (33) non_labeled_closed_statement -> . assignment_statement
+    (34) non_labeled_closed_statement -> . compound_statement
+    (35) non_labeled_closed_statement -> . closed_if_statement
+    (36) non_labeled_closed_statement -> . closed_while_statement
+    (37) non_labeled_closed_statement -> . closed_for_statement
+    (38) non_labeled_closed_statement -> . goto_statement
+    (39) non_labeled_closed_statement -> . empty
+    (40) open_if_statement -> . IF BoolExpr THEN Statement
+    (41) open_if_statement -> . IF BoolExpr THEN closed_statement ELSE open_statement
+    (43) open_while_statement -> . WHILE BoolExpr DO open_statement
+    (45) open_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (51) assignment_statement -> . Variable ASSIGNMENT Expr
+    (52) compound_statement -> . BEGIN StateList END
+    (42) closed_if_statement -> . IF BoolExpr THEN closed_statement ELSE closed_statement
+    (44) closed_while_statement -> . WHILE BoolExpr DO closed_statement
+    (46) closed_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (53) goto_statement -> . GOTO label
+    (76) empty -> .
+    (19) Variable -> . ID
+
+    DIGSEQ          shift and go to state 25
+    IF              shift and go to state 36
+    WHILE           shift and go to state 37
+    FOR             shift and go to state 38
+    BEGIN           shift and go to state 10
+    GOTO            shift and go to state 40
+    END             reduce using rule 76 (empty -> .)
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    ID              shift and go to state 17
+
+    StateList                      shift and go to state 18
+    Statement                      shift and go to state 19
+    open_statement                 shift and go to state 20
+    closed_statement               shift and go to state 21
+    label                          shift and go to state 22
+    non_labeled_open_statement     shift and go to state 23
+    non_labeled_closed_statement   shift and go to state 24
+    open_if_statement              shift and go to state 26
+    open_while_statement           shift and go to state 27
+    open_for_statement             shift and go to state 28
+    assignment_statement           shift and go to state 29
+    compound_statement             shift and go to state 30
+    closed_if_statement            shift and go to state 31
+    closed_while_statement         shift and go to state 32
+    closed_for_statement           shift and go to state 33
+    goto_statement                 shift and go to state 34
+    empty                          shift and go to state 35
+    Variable                       shift and go to state 39
+
+state 11
+
+    (3) VarDef -> VAR VarDefList . SEMICOLON
+    (4) VarDefList -> VarDefList . SEMICOLON VarDefState
+
+    SEMICOLON       shift and go to state 41
+
+
+state 12
+
+    (5) VarDefList -> VarDefState .
+
+    SEMICOLON       reduce using rule 5 (VarDefList -> VarDefState .)
+
+
+state 13
+
+    (6) VarDefState -> VarList . COLON Type
+    (8) VarList -> VarList . COMMA Variable
+
+    COLON           shift and go to state 42
+    COMMA           shift and go to state 43
+
+
+state 14
+
+    (7) VarDefState -> ArrayDefState .
+
+    SEMICOLON       reduce using rule 7 (VarDefState -> ArrayDefState .)
+
+
+state 15
+
+    (9) VarList -> Variable .
+
+    COLON           reduce using rule 9 (VarList -> Variable .)
+    COMMA           reduce using rule 9 (VarList -> Variable .)
+
+
+state 16
+
+    (10) ArrayDefState -> TYPE . arrayName EQ ARRAY LBRAC index_list RBRAC OF Type
+    (11) arrayName -> . ID
+
+    ID              shift and go to state 45
+
+    arrayName                      shift and go to state 44
+
+state 17
+
+    (19) Variable -> ID .
+
+    COLON           reduce using rule 19 (Variable -> ID .)
+    COMMA           reduce using rule 19 (Variable -> ID .)
+    ASSIGNMENT      reduce using rule 19 (Variable -> ID .)
+    LT              reduce using rule 19 (Variable -> ID .)
+    LE              reduce using rule 19 (Variable -> ID .)
+    GT              reduce using rule 19 (Variable -> ID .)
+    GE              reduce using rule 19 (Variable -> ID .)
+    EQ              reduce using rule 19 (Variable -> ID .)
+    NE              reduce using rule 19 (Variable -> ID .)
+    PLUS            reduce using rule 19 (Variable -> ID .)
+    MINUS           reduce using rule 19 (Variable -> ID .)
+    TIMES           reduce using rule 19 (Variable -> ID .)
+    DIVIDE          reduce using rule 19 (Variable -> ID .)
+    THEN            reduce using rule 19 (Variable -> ID .)
+    AND             reduce using rule 19 (Variable -> ID .)
+    OR              reduce using rule 19 (Variable -> ID .)
+    DO              reduce using rule 19 (Variable -> ID .)
+    RPAREN          reduce using rule 19 (Variable -> ID .)
+    END             reduce using rule 19 (Variable -> ID .)
+    SEMICOLON       reduce using rule 19 (Variable -> ID .)
+    ELSE            reduce using rule 19 (Variable -> ID .)
+    TO              reduce using rule 19 (Variable -> ID .)
+    DOWNTO          reduce using rule 19 (Variable -> ID .)
+
+
+state 18
+
+    (52) compound_statement -> BEGIN StateList . END
+    (22) StateList -> StateList . SEMICOLON Statement
+
+    END             shift and go to state 46
+    SEMICOLON       shift and go to state 47
+
+
+state 19
+
+    (23) StateList -> Statement .
+
+    END             reduce using rule 23 (StateList -> Statement .)
+    SEMICOLON       reduce using rule 23 (StateList -> Statement .)
+
+
+state 20
+
+    (24) Statement -> open_statement .
+
+    END             reduce using rule 24 (Statement -> open_statement .)
+    SEMICOLON       reduce using rule 24 (Statement -> open_statement .)
+
+
+state 21
+
+    (25) Statement -> closed_statement .
+
+    END             reduce using rule 25 (Statement -> closed_statement .)
+    SEMICOLON       reduce using rule 25 (Statement -> closed_statement .)
+
+
+state 22
+
+    (26) open_statement -> label . COLON non_labeled_open_statement
+    (28) closed_statement -> label . COLON non_labeled_closed_statement
+
+    COLON           shift and go to state 48
+
+
+state 23
+
+    (27) open_statement -> non_labeled_open_statement .
+
+    END             reduce using rule 27 (open_statement -> non_labeled_open_statement .)
+    SEMICOLON       reduce using rule 27 (open_statement -> non_labeled_open_statement .)
+
+
+state 24
+
+    (29) closed_statement -> non_labeled_closed_statement .
+
+    END             reduce using rule 29 (closed_statement -> non_labeled_closed_statement .)
+    SEMICOLON       reduce using rule 29 (closed_statement -> non_labeled_closed_statement .)
+    ELSE            reduce using rule 29 (closed_statement -> non_labeled_closed_statement .)
+
+
+state 25
+
+    (54) label -> DIGSEQ .
+
+    COLON           reduce using rule 54 (label -> DIGSEQ .)
+    END             reduce using rule 54 (label -> DIGSEQ .)
+    SEMICOLON       reduce using rule 54 (label -> DIGSEQ .)
+    ELSE            reduce using rule 54 (label -> DIGSEQ .)
+
+
+state 26
+
+    (30) non_labeled_open_statement -> open_if_statement .
+
+    END             reduce using rule 30 (non_labeled_open_statement -> open_if_statement .)
+    SEMICOLON       reduce using rule 30 (non_labeled_open_statement -> open_if_statement .)
+
+
+state 27
+
+    (31) non_labeled_open_statement -> open_while_statement .
+
+    END             reduce using rule 31 (non_labeled_open_statement -> open_while_statement .)
+    SEMICOLON       reduce using rule 31 (non_labeled_open_statement -> open_while_statement .)
+
+
+state 28
+
+    (32) non_labeled_open_statement -> open_for_statement .
+
+    END             reduce using rule 32 (non_labeled_open_statement -> open_for_statement .)
+    SEMICOLON       reduce using rule 32 (non_labeled_open_statement -> open_for_statement .)
+
+
+state 29
+
+    (33) non_labeled_closed_statement -> assignment_statement .
+
+    END             reduce using rule 33 (non_labeled_closed_statement -> assignment_statement .)
+    SEMICOLON       reduce using rule 33 (non_labeled_closed_statement -> assignment_statement .)
+    ELSE            reduce using rule 33 (non_labeled_closed_statement -> assignment_statement .)
+
+
+state 30
+
+    (34) non_labeled_closed_statement -> compound_statement .
+
+    END             reduce using rule 34 (non_labeled_closed_statement -> compound_statement .)
+    SEMICOLON       reduce using rule 34 (non_labeled_closed_statement -> compound_statement .)
+    ELSE            reduce using rule 34 (non_labeled_closed_statement -> compound_statement .)
+
+
+state 31
+
+    (35) non_labeled_closed_statement -> closed_if_statement .
+
+    END             reduce using rule 35 (non_labeled_closed_statement -> closed_if_statement .)
+    SEMICOLON       reduce using rule 35 (non_labeled_closed_statement -> closed_if_statement .)
+    ELSE            reduce using rule 35 (non_labeled_closed_statement -> closed_if_statement .)
+
+
+state 32
+
+    (36) non_labeled_closed_statement -> closed_while_statement .
+
+    END             reduce using rule 36 (non_labeled_closed_statement -> closed_while_statement .)
+    SEMICOLON       reduce using rule 36 (non_labeled_closed_statement -> closed_while_statement .)
+    ELSE            reduce using rule 36 (non_labeled_closed_statement -> closed_while_statement .)
+
+
+state 33
+
+    (37) non_labeled_closed_statement -> closed_for_statement .
+
+    END             reduce using rule 37 (non_labeled_closed_statement -> closed_for_statement .)
+    SEMICOLON       reduce using rule 37 (non_labeled_closed_statement -> closed_for_statement .)
+    ELSE            reduce using rule 37 (non_labeled_closed_statement -> closed_for_statement .)
+
+
+state 34
+
+    (38) non_labeled_closed_statement -> goto_statement .
+
+    END             reduce using rule 38 (non_labeled_closed_statement -> goto_statement .)
+    SEMICOLON       reduce using rule 38 (non_labeled_closed_statement -> goto_statement .)
+    ELSE            reduce using rule 38 (non_labeled_closed_statement -> goto_statement .)
+
+
+state 35
+
+    (39) non_labeled_closed_statement -> empty .
+
+    END             reduce using rule 39 (non_labeled_closed_statement -> empty .)
+    SEMICOLON       reduce using rule 39 (non_labeled_closed_statement -> empty .)
+    ELSE            reduce using rule 39 (non_labeled_closed_statement -> empty .)
+
+
+state 36
+
+    (40) open_if_statement -> IF . BoolExpr THEN Statement
+    (41) open_if_statement -> IF . BoolExpr THEN closed_statement ELSE open_statement
+    (42) closed_if_statement -> IF . BoolExpr THEN closed_statement ELSE closed_statement
+    (65) BoolExpr -> . Expr LT Expr
+    (66) BoolExpr -> . Expr LE Expr
+    (67) BoolExpr -> . Expr GT Expr
+    (68) BoolExpr -> . Expr GE Expr
+    (69) BoolExpr -> . Expr EQ Expr
+    (70) BoolExpr -> . Expr NE Expr
+    (71) BoolExpr -> . BoolExpr AND BoolExpr
+    (72) BoolExpr -> . BoolExpr OR BoolExpr
+    (73) BoolExpr -> . NOT BoolExpr
+    (74) BoolExpr -> . LPAREN BoolExpr RPAREN
+    (75) BoolExpr -> . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    NOT             shift and go to state 51
+    LPAREN          shift and go to state 52
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    BoolExpr                       shift and go to state 49
+    Expr                           shift and go to state 50
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 37
+
+    (43) open_while_statement -> WHILE . BoolExpr DO open_statement
+    (44) closed_while_statement -> WHILE . BoolExpr DO closed_statement
+    (65) BoolExpr -> . Expr LT Expr
+    (66) BoolExpr -> . Expr LE Expr
+    (67) BoolExpr -> . Expr GT Expr
+    (68) BoolExpr -> . Expr GE Expr
+    (69) BoolExpr -> . Expr EQ Expr
+    (70) BoolExpr -> . Expr NE Expr
+    (71) BoolExpr -> . BoolExpr AND BoolExpr
+    (72) BoolExpr -> . BoolExpr OR BoolExpr
+    (73) BoolExpr -> . NOT BoolExpr
+    (74) BoolExpr -> . LPAREN BoolExpr RPAREN
+    (75) BoolExpr -> . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    NOT             shift and go to state 51
+    LPAREN          shift and go to state 52
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    BoolExpr                       shift and go to state 58
+    Expr                           shift and go to state 50
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 38
+
+    (45) open_for_statement -> FOR . Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (46) closed_for_statement -> FOR . Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (19) Variable -> . ID
+
+    ID              shift and go to state 17
+
+    Variable                       shift and go to state 59
+
+state 39
+
+    (51) assignment_statement -> Variable . ASSIGNMENT Expr
+
+    ASSIGNMENT      shift and go to state 60
+
+
+state 40
+
+    (53) goto_statement -> GOTO . label
+    (54) label -> . DIGSEQ
+
+    DIGSEQ          shift and go to state 25
+
+    label                          shift and go to state 61
+
+state 41
+
+    (3) VarDef -> VAR VarDefList SEMICOLON .
+    (4) VarDefList -> VarDefList SEMICOLON . VarDefState
+    (6) VarDefState -> . VarList COLON Type
+    (7) VarDefState -> . ArrayDefState
+    (8) VarList -> . VarList COMMA Variable
+    (9) VarList -> . Variable
+    (10) ArrayDefState -> . TYPE arrayName EQ ARRAY LBRAC index_list RBRAC OF Type
+    (19) Variable -> . ID
+
+    BEGIN           reduce using rule 3 (VarDef -> VAR VarDefList SEMICOLON .)
+    TYPE            shift and go to state 16
+    ID              shift and go to state 17
+
+    VarDefState                    shift and go to state 62
+    VarList                        shift and go to state 13
+    ArrayDefState                  shift and go to state 14
+    Variable                       shift and go to state 15
+
+state 42
+
+    (6) VarDefState -> VarList COLON . Type
+    (15) Type -> . INTEGER
+    (16) Type -> . REAL
+    (17) Type -> . BOOLEAN
+    (18) Type -> . arrayName
+    (11) arrayName -> . ID
+
+    INTEGER         shift and go to state 64
+    REAL            shift and go to state 65
+    BOOLEAN         shift and go to state 66
+    ID              shift and go to state 45
+
+    Type                           shift and go to state 63
+    arrayName                      shift and go to state 67
+
+state 43
+
+    (8) VarList -> VarList COMMA . Variable
+    (19) Variable -> . ID
+
+    ID              shift and go to state 17
+
+    Variable                       shift and go to state 68
+
+state 44
+
+    (10) ArrayDefState -> TYPE arrayName . EQ ARRAY LBRAC index_list RBRAC OF Type
+
+    EQ              shift and go to state 69
+
+
+state 45
+
+    (11) arrayName -> ID .
+
+    EQ              reduce using rule 11 (arrayName -> ID .)
+    SEMICOLON       reduce using rule 11 (arrayName -> ID .)
+
+
+state 46
+
+    (52) compound_statement -> BEGIN StateList END .
+
+    ENDPOINT        reduce using rule 52 (compound_statement -> BEGIN StateList END .)
+    END             reduce using rule 52 (compound_statement -> BEGIN StateList END .)
+    SEMICOLON       reduce using rule 52 (compound_statement -> BEGIN StateList END .)
+    ELSE            reduce using rule 52 (compound_statement -> BEGIN StateList END .)
+
+
+state 47
+
+    (22) StateList -> StateList SEMICOLON . Statement
+    (24) Statement -> . open_statement
+    (25) Statement -> . closed_statement
+    (26) open_statement -> . label COLON non_labeled_open_statement
+    (27) open_statement -> . non_labeled_open_statement
+    (28) closed_statement -> . label COLON non_labeled_closed_statement
+    (29) closed_statement -> . non_labeled_closed_statement
+    (54) label -> . DIGSEQ
+    (30) non_labeled_open_statement -> . open_if_statement
+    (31) non_labeled_open_statement -> . open_while_statement
+    (32) non_labeled_open_statement -> . open_for_statement
+    (33) non_labeled_closed_statement -> . assignment_statement
+    (34) non_labeled_closed_statement -> . compound_statement
+    (35) non_labeled_closed_statement -> . closed_if_statement
+    (36) non_labeled_closed_statement -> . closed_while_statement
+    (37) non_labeled_closed_statement -> . closed_for_statement
+    (38) non_labeled_closed_statement -> . goto_statement
+    (39) non_labeled_closed_statement -> . empty
+    (40) open_if_statement -> . IF BoolExpr THEN Statement
+    (41) open_if_statement -> . IF BoolExpr THEN closed_statement ELSE open_statement
+    (43) open_while_statement -> . WHILE BoolExpr DO open_statement
+    (45) open_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (51) assignment_statement -> . Variable ASSIGNMENT Expr
+    (52) compound_statement -> . BEGIN StateList END
+    (42) closed_if_statement -> . IF BoolExpr THEN closed_statement ELSE closed_statement
+    (44) closed_while_statement -> . WHILE BoolExpr DO closed_statement
+    (46) closed_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (53) goto_statement -> . GOTO label
+    (76) empty -> .
+    (19) Variable -> . ID
+
+    DIGSEQ          shift and go to state 25
+    IF              shift and go to state 36
+    WHILE           shift and go to state 37
+    FOR             shift and go to state 38
+    BEGIN           shift and go to state 10
+    GOTO            shift and go to state 40
+    END             reduce using rule 76 (empty -> .)
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    ID              shift and go to state 17
+
+    Statement                      shift and go to state 70
+    open_statement                 shift and go to state 20
+    closed_statement               shift and go to state 21
+    label                          shift and go to state 22
+    non_labeled_open_statement     shift and go to state 23
+    non_labeled_closed_statement   shift and go to state 24
+    open_if_statement              shift and go to state 26
+    open_while_statement           shift and go to state 27
+    open_for_statement             shift and go to state 28
+    assignment_statement           shift and go to state 29
+    compound_statement             shift and go to state 30
+    closed_if_statement            shift and go to state 31
+    closed_while_statement         shift and go to state 32
+    closed_for_statement           shift and go to state 33
+    goto_statement                 shift and go to state 34
+    empty                          shift and go to state 35
+    Variable                       shift and go to state 39
+
+state 48
+
+    (26) open_statement -> label COLON . non_labeled_open_statement
+    (28) closed_statement -> label COLON . non_labeled_closed_statement
+    (30) non_labeled_open_statement -> . open_if_statement
+    (31) non_labeled_open_statement -> . open_while_statement
+    (32) non_labeled_open_statement -> . open_for_statement
+    (33) non_labeled_closed_statement -> . assignment_statement
+    (34) non_labeled_closed_statement -> . compound_statement
+    (35) non_labeled_closed_statement -> . closed_if_statement
+    (36) non_labeled_closed_statement -> . closed_while_statement
+    (37) non_labeled_closed_statement -> . closed_for_statement
+    (38) non_labeled_closed_statement -> . goto_statement
+    (39) non_labeled_closed_statement -> . empty
+    (40) open_if_statement -> . IF BoolExpr THEN Statement
+    (41) open_if_statement -> . IF BoolExpr THEN closed_statement ELSE open_statement
+    (43) open_while_statement -> . WHILE BoolExpr DO open_statement
+    (45) open_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (51) assignment_statement -> . Variable ASSIGNMENT Expr
+    (52) compound_statement -> . BEGIN StateList END
+    (42) closed_if_statement -> . IF BoolExpr THEN closed_statement ELSE closed_statement
+    (44) closed_while_statement -> . WHILE BoolExpr DO closed_statement
+    (46) closed_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (53) goto_statement -> . GOTO label
+    (76) empty -> .
+    (19) Variable -> . ID
+
+    IF              shift and go to state 36
+    WHILE           shift and go to state 37
+    FOR             shift and go to state 38
+    BEGIN           shift and go to state 10
+    GOTO            shift and go to state 40
+    END             reduce using rule 76 (empty -> .)
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    ELSE            reduce using rule 76 (empty -> .)
+    ID              shift and go to state 17
+
+    non_labeled_open_statement     shift and go to state 71
+    non_labeled_closed_statement   shift and go to state 72
+    open_if_statement              shift and go to state 26
+    open_while_statement           shift and go to state 27
+    open_for_statement             shift and go to state 28
+    assignment_statement           shift and go to state 29
+    compound_statement             shift and go to state 30
+    closed_if_statement            shift and go to state 31
+    closed_while_statement         shift and go to state 32
+    closed_for_statement           shift and go to state 33
+    goto_statement                 shift and go to state 34
+    empty                          shift and go to state 35
+    Variable                       shift and go to state 39
+
+state 49
+
+    (40) open_if_statement -> IF BoolExpr . THEN Statement
+    (41) open_if_statement -> IF BoolExpr . THEN closed_statement ELSE open_statement
+    (42) closed_if_statement -> IF BoolExpr . THEN closed_statement ELSE closed_statement
+    (71) BoolExpr -> BoolExpr . AND BoolExpr
+    (72) BoolExpr -> BoolExpr . OR BoolExpr
+
+    THEN            shift and go to state 73
+    AND             shift and go to state 74
+    OR              shift and go to state 75
+
+
+state 50
+
+    (65) BoolExpr -> Expr . LT Expr
+    (66) BoolExpr -> Expr . LE Expr
+    (67) BoolExpr -> Expr . GT Expr
+    (68) BoolExpr -> Expr . GE Expr
+    (69) BoolExpr -> Expr . EQ Expr
+    (70) BoolExpr -> Expr . NE Expr
+    (75) BoolExpr -> Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    LT              shift and go to state 76
+    LE              shift and go to state 77
+    GT              shift and go to state 78
+    GE              shift and go to state 79
+    EQ              shift and go to state 80
+    NE              shift and go to state 81
+    THEN            reduce using rule 75 (BoolExpr -> Expr .)
+    AND             reduce using rule 75 (BoolExpr -> Expr .)
+    OR              reduce using rule 75 (BoolExpr -> Expr .)
+    DO              reduce using rule 75 (BoolExpr -> Expr .)
+    RPAREN          reduce using rule 75 (BoolExpr -> Expr .)
+    PLUS            shift and go to state 82
+    MINUS           shift and go to state 83
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+
+state 51
+
+    (73) BoolExpr -> NOT . BoolExpr
+    (65) BoolExpr -> . Expr LT Expr
+    (66) BoolExpr -> . Expr LE Expr
+    (67) BoolExpr -> . Expr GT Expr
+    (68) BoolExpr -> . Expr GE Expr
+    (69) BoolExpr -> . Expr EQ Expr
+    (70) BoolExpr -> . Expr NE Expr
+    (71) BoolExpr -> . BoolExpr AND BoolExpr
+    (72) BoolExpr -> . BoolExpr OR BoolExpr
+    (73) BoolExpr -> . NOT BoolExpr
+    (74) BoolExpr -> . LPAREN BoolExpr RPAREN
+    (75) BoolExpr -> . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    NOT             shift and go to state 51
+    LPAREN          shift and go to state 52
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    BoolExpr                       shift and go to state 86
+    Expr                           shift and go to state 50
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 52
+
+    (74) BoolExpr -> LPAREN . BoolExpr RPAREN
+    (59) Expr -> LPAREN . Expr RPAREN
+    (65) BoolExpr -> . Expr LT Expr
+    (66) BoolExpr -> . Expr LE Expr
+    (67) BoolExpr -> . Expr GT Expr
+    (68) BoolExpr -> . Expr GE Expr
+    (69) BoolExpr -> . Expr EQ Expr
+    (70) BoolExpr -> . Expr NE Expr
+    (71) BoolExpr -> . BoolExpr AND BoolExpr
+    (72) BoolExpr -> . BoolExpr OR BoolExpr
+    (73) BoolExpr -> . NOT BoolExpr
+    (74) BoolExpr -> . LPAREN BoolExpr RPAREN
+    (75) BoolExpr -> . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    NOT             shift and go to state 51
+    LPAREN          shift and go to state 52
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    BoolExpr                       shift and go to state 87
+    Expr                           shift and go to state 88
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 53
+
+    (60) Expr -> MINUS . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Expr                           shift and go to state 89
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 54
+
+    (61) Expr -> Variable .
+
+    LT              reduce using rule 61 (Expr -> Variable .)
+    LE              reduce using rule 61 (Expr -> Variable .)
+    GT              reduce using rule 61 (Expr -> Variable .)
+    GE              reduce using rule 61 (Expr -> Variable .)
+    EQ              reduce using rule 61 (Expr -> Variable .)
+    NE              reduce using rule 61 (Expr -> Variable .)
+    PLUS            reduce using rule 61 (Expr -> Variable .)
+    MINUS           reduce using rule 61 (Expr -> Variable .)
+    TIMES           reduce using rule 61 (Expr -> Variable .)
+    DIVIDE          reduce using rule 61 (Expr -> Variable .)
+    THEN            reduce using rule 61 (Expr -> Variable .)
+    AND             reduce using rule 61 (Expr -> Variable .)
+    OR              reduce using rule 61 (Expr -> Variable .)
+    DO              reduce using rule 61 (Expr -> Variable .)
+    RPAREN          reduce using rule 61 (Expr -> Variable .)
+    END             reduce using rule 61 (Expr -> Variable .)
+    SEMICOLON       reduce using rule 61 (Expr -> Variable .)
+    ELSE            reduce using rule 61 (Expr -> Variable .)
+    TO              reduce using rule 61 (Expr -> Variable .)
+    DOWNTO          reduce using rule 61 (Expr -> Variable .)
+
+
+state 55
+
+    (62) Expr -> const .
+
+    LT              reduce using rule 62 (Expr -> const .)
+    LE              reduce using rule 62 (Expr -> const .)
+    GT              reduce using rule 62 (Expr -> const .)
+    GE              reduce using rule 62 (Expr -> const .)
+    EQ              reduce using rule 62 (Expr -> const .)
+    NE              reduce using rule 62 (Expr -> const .)
+    PLUS            reduce using rule 62 (Expr -> const .)
+    MINUS           reduce using rule 62 (Expr -> const .)
+    TIMES           reduce using rule 62 (Expr -> const .)
+    DIVIDE          reduce using rule 62 (Expr -> const .)
+    THEN            reduce using rule 62 (Expr -> const .)
+    AND             reduce using rule 62 (Expr -> const .)
+    OR              reduce using rule 62 (Expr -> const .)
+    DO              reduce using rule 62 (Expr -> const .)
+    RPAREN          reduce using rule 62 (Expr -> const .)
+    END             reduce using rule 62 (Expr -> const .)
+    SEMICOLON       reduce using rule 62 (Expr -> const .)
+    ELSE            reduce using rule 62 (Expr -> const .)
+    TO              reduce using rule 62 (Expr -> const .)
+    DOWNTO          reduce using rule 62 (Expr -> const .)
+
+
+state 56
+
+    (63) const -> INT_NUMBER .
+
+    LT              reduce using rule 63 (const -> INT_NUMBER .)
+    LE              reduce using rule 63 (const -> INT_NUMBER .)
+    GT              reduce using rule 63 (const -> INT_NUMBER .)
+    GE              reduce using rule 63 (const -> INT_NUMBER .)
+    EQ              reduce using rule 63 (const -> INT_NUMBER .)
+    NE              reduce using rule 63 (const -> INT_NUMBER .)
+    PLUS            reduce using rule 63 (const -> INT_NUMBER .)
+    MINUS           reduce using rule 63 (const -> INT_NUMBER .)
+    TIMES           reduce using rule 63 (const -> INT_NUMBER .)
+    DIVIDE          reduce using rule 63 (const -> INT_NUMBER .)
+    THEN            reduce using rule 63 (const -> INT_NUMBER .)
+    AND             reduce using rule 63 (const -> INT_NUMBER .)
+    OR              reduce using rule 63 (const -> INT_NUMBER .)
+    DO              reduce using rule 63 (const -> INT_NUMBER .)
+    RPAREN          reduce using rule 63 (const -> INT_NUMBER .)
+    END             reduce using rule 63 (const -> INT_NUMBER .)
+    SEMICOLON       reduce using rule 63 (const -> INT_NUMBER .)
+    ELSE            reduce using rule 63 (const -> INT_NUMBER .)
+    TO              reduce using rule 63 (const -> INT_NUMBER .)
+    DOWNTO          reduce using rule 63 (const -> INT_NUMBER .)
+    DOTDOT          reduce using rule 63 (const -> INT_NUMBER .)
+    RBRAC           reduce using rule 63 (const -> INT_NUMBER .)
+    COMMA           reduce using rule 63 (const -> INT_NUMBER .)
+
+
+state 57
+
+    (64) const -> REAL_NUMBER .
+
+    LT              reduce using rule 64 (const -> REAL_NUMBER .)
+    LE              reduce using rule 64 (const -> REAL_NUMBER .)
+    GT              reduce using rule 64 (const -> REAL_NUMBER .)
+    GE              reduce using rule 64 (const -> REAL_NUMBER .)
+    EQ              reduce using rule 64 (const -> REAL_NUMBER .)
+    NE              reduce using rule 64 (const -> REAL_NUMBER .)
+    PLUS            reduce using rule 64 (const -> REAL_NUMBER .)
+    MINUS           reduce using rule 64 (const -> REAL_NUMBER .)
+    TIMES           reduce using rule 64 (const -> REAL_NUMBER .)
+    DIVIDE          reduce using rule 64 (const -> REAL_NUMBER .)
+    THEN            reduce using rule 64 (const -> REAL_NUMBER .)
+    AND             reduce using rule 64 (const -> REAL_NUMBER .)
+    OR              reduce using rule 64 (const -> REAL_NUMBER .)
+    DO              reduce using rule 64 (const -> REAL_NUMBER .)
+    RPAREN          reduce using rule 64 (const -> REAL_NUMBER .)
+    END             reduce using rule 64 (const -> REAL_NUMBER .)
+    SEMICOLON       reduce using rule 64 (const -> REAL_NUMBER .)
+    ELSE            reduce using rule 64 (const -> REAL_NUMBER .)
+    TO              reduce using rule 64 (const -> REAL_NUMBER .)
+    DOWNTO          reduce using rule 64 (const -> REAL_NUMBER .)
+    DOTDOT          reduce using rule 64 (const -> REAL_NUMBER .)
+    RBRAC           reduce using rule 64 (const -> REAL_NUMBER .)
+    COMMA           reduce using rule 64 (const -> REAL_NUMBER .)
+
+
+state 58
+
+    (43) open_while_statement -> WHILE BoolExpr . DO open_statement
+    (44) closed_while_statement -> WHILE BoolExpr . DO closed_statement
+    (71) BoolExpr -> BoolExpr . AND BoolExpr
+    (72) BoolExpr -> BoolExpr . OR BoolExpr
+
+    DO              shift and go to state 91
+    AND             shift and go to state 74
+    OR              shift and go to state 75
+
+
+state 59
+
+    (45) open_for_statement -> FOR Variable . ASSIGNMENT initial_value direction final_value DO open_statement
+    (46) closed_for_statement -> FOR Variable . ASSIGNMENT initial_value direction final_value DO closed_statement
+
+    ASSIGNMENT      shift and go to state 92
+
+
+state 60
+
+    (51) assignment_statement -> Variable ASSIGNMENT . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Variable                       shift and go to state 54
+    Expr                           shift and go to state 93
+    const                          shift and go to state 55
+
+state 61
+
+    (53) goto_statement -> GOTO label .
+
+    END             reduce using rule 53 (goto_statement -> GOTO label .)
+    SEMICOLON       reduce using rule 53 (goto_statement -> GOTO label .)
+    ELSE            reduce using rule 53 (goto_statement -> GOTO label .)
+
+
+state 62
+
+    (4) VarDefList -> VarDefList SEMICOLON VarDefState .
+
+    SEMICOLON       reduce using rule 4 (VarDefList -> VarDefList SEMICOLON VarDefState .)
+
+
+state 63
+
+    (6) VarDefState -> VarList COLON Type .
+
+    SEMICOLON       reduce using rule 6 (VarDefState -> VarList COLON Type .)
+
+
+state 64
+
+    (15) Type -> INTEGER .
+
+    SEMICOLON       reduce using rule 15 (Type -> INTEGER .)
+
+
+state 65
+
+    (16) Type -> REAL .
+
+    SEMICOLON       reduce using rule 16 (Type -> REAL .)
+
+
+state 66
+
+    (17) Type -> BOOLEAN .
+
+    SEMICOLON       reduce using rule 17 (Type -> BOOLEAN .)
+
+
+state 67
+
+    (18) Type -> arrayName .
+
+    SEMICOLON       reduce using rule 18 (Type -> arrayName .)
+
+
+state 68
+
+    (8) VarList -> VarList COMMA Variable .
+
+    COLON           reduce using rule 8 (VarList -> VarList COMMA Variable .)
+    COMMA           reduce using rule 8 (VarList -> VarList COMMA Variable .)
+
+
+state 69
+
+    (10) ArrayDefState -> TYPE arrayName EQ . ARRAY LBRAC index_list RBRAC OF Type
+
+    ARRAY           shift and go to state 94
+
+
+state 70
+
+    (22) StateList -> StateList SEMICOLON Statement .
+
+    END             reduce using rule 22 (StateList -> StateList SEMICOLON Statement .)
+    SEMICOLON       reduce using rule 22 (StateList -> StateList SEMICOLON Statement .)
+
+
+state 71
+
+    (26) open_statement -> label COLON non_labeled_open_statement .
+
+    END             reduce using rule 26 (open_statement -> label COLON non_labeled_open_statement .)
+    SEMICOLON       reduce using rule 26 (open_statement -> label COLON non_labeled_open_statement .)
+
+
+state 72
+
+    (28) closed_statement -> label COLON non_labeled_closed_statement .
+
+    END             reduce using rule 28 (closed_statement -> label COLON non_labeled_closed_statement .)
+    SEMICOLON       reduce using rule 28 (closed_statement -> label COLON non_labeled_closed_statement .)
+    ELSE            reduce using rule 28 (closed_statement -> label COLON non_labeled_closed_statement .)
+
+
+state 73
+
+    (40) open_if_statement -> IF BoolExpr THEN . Statement
+    (41) open_if_statement -> IF BoolExpr THEN . closed_statement ELSE open_statement
+    (42) closed_if_statement -> IF BoolExpr THEN . closed_statement ELSE closed_statement
+    (24) Statement -> . open_statement
+    (25) Statement -> . closed_statement
+    (28) closed_statement -> . label COLON non_labeled_closed_statement
+    (29) closed_statement -> . non_labeled_closed_statement
+    (26) open_statement -> . label COLON non_labeled_open_statement
+    (27) open_statement -> . non_labeled_open_statement
+    (54) label -> . DIGSEQ
+    (33) non_labeled_closed_statement -> . assignment_statement
+    (34) non_labeled_closed_statement -> . compound_statement
+    (35) non_labeled_closed_statement -> . closed_if_statement
+    (36) non_labeled_closed_statement -> . closed_while_statement
+    (37) non_labeled_closed_statement -> . closed_for_statement
+    (38) non_labeled_closed_statement -> . goto_statement
+    (39) non_labeled_closed_statement -> . empty
+    (30) non_labeled_open_statement -> . open_if_statement
+    (31) non_labeled_open_statement -> . open_while_statement
+    (32) non_labeled_open_statement -> . open_for_statement
+    (51) assignment_statement -> . Variable ASSIGNMENT Expr
+    (52) compound_statement -> . BEGIN StateList END
+    (42) closed_if_statement -> . IF BoolExpr THEN closed_statement ELSE closed_statement
+    (44) closed_while_statement -> . WHILE BoolExpr DO closed_statement
+    (46) closed_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (53) goto_statement -> . GOTO label
+    (76) empty -> .
+    (40) open_if_statement -> . IF BoolExpr THEN Statement
+    (41) open_if_statement -> . IF BoolExpr THEN closed_statement ELSE open_statement
+    (43) open_while_statement -> . WHILE BoolExpr DO open_statement
+    (45) open_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (19) Variable -> . ID
+
+    DIGSEQ          shift and go to state 25
+    BEGIN           shift and go to state 10
+    IF              shift and go to state 95
+    WHILE           shift and go to state 99
+    FOR             shift and go to state 100
+    GOTO            shift and go to state 40
+    ELSE            reduce using rule 76 (empty -> .)
+    END             reduce using rule 76 (empty -> .)
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    ID              shift and go to state 17
+
+    Statement                      shift and go to state 96
+    closed_statement               shift and go to state 97
+    open_statement                 shift and go to state 20
+    label                          shift and go to state 98
+    non_labeled_closed_statement   shift and go to state 24
+    non_labeled_open_statement     shift and go to state 23
+    assignment_statement           shift and go to state 29
+    compound_statement             shift and go to state 30
+    closed_if_statement            shift and go to state 31
+    closed_while_statement         shift and go to state 32
+    closed_for_statement           shift and go to state 33
+    goto_statement                 shift and go to state 34
+    empty                          shift and go to state 35
+    open_if_statement              shift and go to state 26
+    open_while_statement           shift and go to state 27
+    open_for_statement             shift and go to state 28
+    Variable                       shift and go to state 39
+
+state 74
+
+    (71) BoolExpr -> BoolExpr AND . BoolExpr
+    (65) BoolExpr -> . Expr LT Expr
+    (66) BoolExpr -> . Expr LE Expr
+    (67) BoolExpr -> . Expr GT Expr
+    (68) BoolExpr -> . Expr GE Expr
+    (69) BoolExpr -> . Expr EQ Expr
+    (70) BoolExpr -> . Expr NE Expr
+    (71) BoolExpr -> . BoolExpr AND BoolExpr
+    (72) BoolExpr -> . BoolExpr OR BoolExpr
+    (73) BoolExpr -> . NOT BoolExpr
+    (74) BoolExpr -> . LPAREN BoolExpr RPAREN
+    (75) BoolExpr -> . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    NOT             shift and go to state 51
+    LPAREN          shift and go to state 52
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    BoolExpr                       shift and go to state 101
+    Expr                           shift and go to state 50
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 75
+
+    (72) BoolExpr -> BoolExpr OR . BoolExpr
+    (65) BoolExpr -> . Expr LT Expr
+    (66) BoolExpr -> . Expr LE Expr
+    (67) BoolExpr -> . Expr GT Expr
+    (68) BoolExpr -> . Expr GE Expr
+    (69) BoolExpr -> . Expr EQ Expr
+    (70) BoolExpr -> . Expr NE Expr
+    (71) BoolExpr -> . BoolExpr AND BoolExpr
+    (72) BoolExpr -> . BoolExpr OR BoolExpr
+    (73) BoolExpr -> . NOT BoolExpr
+    (74) BoolExpr -> . LPAREN BoolExpr RPAREN
+    (75) BoolExpr -> . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    NOT             shift and go to state 51
+    LPAREN          shift and go to state 52
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    BoolExpr                       shift and go to state 102
+    Expr                           shift and go to state 50
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 76
+
+    (65) BoolExpr -> Expr LT . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Expr                           shift and go to state 103
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 77
+
+    (66) BoolExpr -> Expr LE . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Expr                           shift and go to state 104
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 78
+
+    (67) BoolExpr -> Expr GT . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Expr                           shift and go to state 105
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 79
+
+    (68) BoolExpr -> Expr GE . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Expr                           shift and go to state 106
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 80
+
+    (69) BoolExpr -> Expr EQ . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Expr                           shift and go to state 107
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 81
+
+    (70) BoolExpr -> Expr NE . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Expr                           shift and go to state 108
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 82
+
+    (55) Expr -> Expr PLUS . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Expr                           shift and go to state 109
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 83
+
+    (56) Expr -> Expr MINUS . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Expr                           shift and go to state 110
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 84
+
+    (57) Expr -> Expr TIMES . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Expr                           shift and go to state 111
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 85
+
+    (58) Expr -> Expr DIVIDE . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Expr                           shift and go to state 112
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 86
+
+    (73) BoolExpr -> NOT BoolExpr .
+    (71) BoolExpr -> BoolExpr . AND BoolExpr
+    (72) BoolExpr -> BoolExpr . OR BoolExpr
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    THEN            reduce using rule 73 (BoolExpr -> NOT BoolExpr .)
+    DO              reduce using rule 73 (BoolExpr -> NOT BoolExpr .)
+    RPAREN          reduce using rule 73 (BoolExpr -> NOT BoolExpr .)
+    AND             shift and go to state 74
+    OR              shift and go to state 75
+
+  ! AND             [ reduce using rule 73 (BoolExpr -> NOT BoolExpr .) ]
+  ! OR              [ reduce using rule 73 (BoolExpr -> NOT BoolExpr .) ]
+
+
+state 87
+
+    (74) BoolExpr -> LPAREN BoolExpr . RPAREN
+    (71) BoolExpr -> BoolExpr . AND BoolExpr
+    (72) BoolExpr -> BoolExpr . OR BoolExpr
+
+    RPAREN          shift and go to state 113
+    AND             shift and go to state 74
+    OR              shift and go to state 75
+
+
+state 88
+
+    (59) Expr -> LPAREN Expr . RPAREN
+    (65) BoolExpr -> Expr . LT Expr
+    (66) BoolExpr -> Expr . LE Expr
+    (67) BoolExpr -> Expr . GT Expr
+    (68) BoolExpr -> Expr . GE Expr
+    (69) BoolExpr -> Expr . EQ Expr
+    (70) BoolExpr -> Expr . NE Expr
+    (75) BoolExpr -> Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+  ! shift/reduce conflict for RPAREN resolved as shift
+    RPAREN          shift and go to state 114
+    LT              shift and go to state 76
+    LE              shift and go to state 77
+    GT              shift and go to state 78
+    GE              shift and go to state 79
+    EQ              shift and go to state 80
+    NE              shift and go to state 81
+    AND             reduce using rule 75 (BoolExpr -> Expr .)
+    OR              reduce using rule 75 (BoolExpr -> Expr .)
+    PLUS            shift and go to state 82
+    MINUS           shift and go to state 83
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+  ! RPAREN          [ reduce using rule 75 (BoolExpr -> Expr .) ]
+
+
+state 89
+
+    (60) Expr -> MINUS Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    LT              reduce using rule 60 (Expr -> MINUS Expr .)
+    LE              reduce using rule 60 (Expr -> MINUS Expr .)
+    GT              reduce using rule 60 (Expr -> MINUS Expr .)
+    GE              reduce using rule 60 (Expr -> MINUS Expr .)
+    EQ              reduce using rule 60 (Expr -> MINUS Expr .)
+    NE              reduce using rule 60 (Expr -> MINUS Expr .)
+    PLUS            reduce using rule 60 (Expr -> MINUS Expr .)
+    MINUS           reduce using rule 60 (Expr -> MINUS Expr .)
+    TIMES           reduce using rule 60 (Expr -> MINUS Expr .)
+    DIVIDE          reduce using rule 60 (Expr -> MINUS Expr .)
+    THEN            reduce using rule 60 (Expr -> MINUS Expr .)
+    AND             reduce using rule 60 (Expr -> MINUS Expr .)
+    OR              reduce using rule 60 (Expr -> MINUS Expr .)
+    DO              reduce using rule 60 (Expr -> MINUS Expr .)
+    RPAREN          reduce using rule 60 (Expr -> MINUS Expr .)
+    END             reduce using rule 60 (Expr -> MINUS Expr .)
+    SEMICOLON       reduce using rule 60 (Expr -> MINUS Expr .)
+    ELSE            reduce using rule 60 (Expr -> MINUS Expr .)
+    TO              reduce using rule 60 (Expr -> MINUS Expr .)
+    DOWNTO          reduce using rule 60 (Expr -> MINUS Expr .)
+
+  ! PLUS            [ shift and go to state 82 ]
+  ! MINUS           [ shift and go to state 83 ]
+  ! TIMES           [ shift and go to state 84 ]
+  ! DIVIDE          [ shift and go to state 85 ]
+
+
+state 90
+
+    (59) Expr -> LPAREN . Expr RPAREN
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Expr                           shift and go to state 115
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 91
+
+    (43) open_while_statement -> WHILE BoolExpr DO . open_statement
+    (44) closed_while_statement -> WHILE BoolExpr DO . closed_statement
+    (26) open_statement -> . label COLON non_labeled_open_statement
+    (27) open_statement -> . non_labeled_open_statement
+    (28) closed_statement -> . label COLON non_labeled_closed_statement
+    (29) closed_statement -> . non_labeled_closed_statement
+    (54) label -> . DIGSEQ
+    (30) non_labeled_open_statement -> . open_if_statement
+    (31) non_labeled_open_statement -> . open_while_statement
+    (32) non_labeled_open_statement -> . open_for_statement
+    (33) non_labeled_closed_statement -> . assignment_statement
+    (34) non_labeled_closed_statement -> . compound_statement
+    (35) non_labeled_closed_statement -> . closed_if_statement
+    (36) non_labeled_closed_statement -> . closed_while_statement
+    (37) non_labeled_closed_statement -> . closed_for_statement
+    (38) non_labeled_closed_statement -> . goto_statement
+    (39) non_labeled_closed_statement -> . empty
+    (40) open_if_statement -> . IF BoolExpr THEN Statement
+    (41) open_if_statement -> . IF BoolExpr THEN closed_statement ELSE open_statement
+    (43) open_while_statement -> . WHILE BoolExpr DO open_statement
+    (45) open_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (51) assignment_statement -> . Variable ASSIGNMENT Expr
+    (52) compound_statement -> . BEGIN StateList END
+    (42) closed_if_statement -> . IF BoolExpr THEN closed_statement ELSE closed_statement
+    (44) closed_while_statement -> . WHILE BoolExpr DO closed_statement
+    (46) closed_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (53) goto_statement -> . GOTO label
+    (76) empty -> .
+    (19) Variable -> . ID
+
+    DIGSEQ          shift and go to state 25
+    IF              shift and go to state 36
+    WHILE           shift and go to state 37
+    FOR             shift and go to state 38
+    BEGIN           shift and go to state 10
+    GOTO            shift and go to state 40
+    END             reduce using rule 76 (empty -> .)
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    ELSE            reduce using rule 76 (empty -> .)
+    ID              shift and go to state 17
+
+    open_statement                 shift and go to state 116
+    closed_statement               shift and go to state 117
+    label                          shift and go to state 22
+    non_labeled_open_statement     shift and go to state 23
+    non_labeled_closed_statement   shift and go to state 24
+    open_if_statement              shift and go to state 26
+    open_while_statement           shift and go to state 27
+    open_for_statement             shift and go to state 28
+    assignment_statement           shift and go to state 29
+    compound_statement             shift and go to state 30
+    closed_if_statement            shift and go to state 31
+    closed_while_statement         shift and go to state 32
+    closed_for_statement           shift and go to state 33
+    goto_statement                 shift and go to state 34
+    empty                          shift and go to state 35
+    Variable                       shift and go to state 39
+
+state 92
+
+    (45) open_for_statement -> FOR Variable ASSIGNMENT . initial_value direction final_value DO open_statement
+    (46) closed_for_statement -> FOR Variable ASSIGNMENT . initial_value direction final_value DO closed_statement
+    (47) initial_value -> . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Variable                       shift and go to state 54
+    initial_value                  shift and go to state 118
+    Expr                           shift and go to state 119
+    const                          shift and go to state 55
+
+state 93
+
+    (51) assignment_statement -> Variable ASSIGNMENT Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    END             reduce using rule 51 (assignment_statement -> Variable ASSIGNMENT Expr .)
+    SEMICOLON       reduce using rule 51 (assignment_statement -> Variable ASSIGNMENT Expr .)
+    ELSE            reduce using rule 51 (assignment_statement -> Variable ASSIGNMENT Expr .)
+    PLUS            shift and go to state 82
+    MINUS           shift and go to state 83
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+
+state 94
+
+    (10) ArrayDefState -> TYPE arrayName EQ ARRAY . LBRAC index_list RBRAC OF Type
+
+    LBRAC           shift and go to state 120
+
+
+state 95
+
+    (42) closed_if_statement -> IF . BoolExpr THEN closed_statement ELSE closed_statement
+    (40) open_if_statement -> IF . BoolExpr THEN Statement
+    (41) open_if_statement -> IF . BoolExpr THEN closed_statement ELSE open_statement
+    (65) BoolExpr -> . Expr LT Expr
+    (66) BoolExpr -> . Expr LE Expr
+    (67) BoolExpr -> . Expr GT Expr
+    (68) BoolExpr -> . Expr GE Expr
+    (69) BoolExpr -> . Expr EQ Expr
+    (70) BoolExpr -> . Expr NE Expr
+    (71) BoolExpr -> . BoolExpr AND BoolExpr
+    (72) BoolExpr -> . BoolExpr OR BoolExpr
+    (73) BoolExpr -> . NOT BoolExpr
+    (74) BoolExpr -> . LPAREN BoolExpr RPAREN
+    (75) BoolExpr -> . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    NOT             shift and go to state 51
+    LPAREN          shift and go to state 52
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    BoolExpr                       shift and go to state 121
+    Expr                           shift and go to state 50
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 96
+
+    (40) open_if_statement -> IF BoolExpr THEN Statement .
+
+    END             reduce using rule 40 (open_if_statement -> IF BoolExpr THEN Statement .)
+    SEMICOLON       reduce using rule 40 (open_if_statement -> IF BoolExpr THEN Statement .)
+
+
+state 97
+
+    (41) open_if_statement -> IF BoolExpr THEN closed_statement . ELSE open_statement
+    (42) closed_if_statement -> IF BoolExpr THEN closed_statement . ELSE closed_statement
+    (25) Statement -> closed_statement .
+
+    ELSE            shift and go to state 122
+    END             reduce using rule 25 (Statement -> closed_statement .)
+    SEMICOLON       reduce using rule 25 (Statement -> closed_statement .)
+
+
+state 98
+
+    (28) closed_statement -> label . COLON non_labeled_closed_statement
+    (26) open_statement -> label . COLON non_labeled_open_statement
+
+    COLON           shift and go to state 123
+
+
+state 99
+
+    (44) closed_while_statement -> WHILE . BoolExpr DO closed_statement
+    (43) open_while_statement -> WHILE . BoolExpr DO open_statement
+    (65) BoolExpr -> . Expr LT Expr
+    (66) BoolExpr -> . Expr LE Expr
+    (67) BoolExpr -> . Expr GT Expr
+    (68) BoolExpr -> . Expr GE Expr
+    (69) BoolExpr -> . Expr EQ Expr
+    (70) BoolExpr -> . Expr NE Expr
+    (71) BoolExpr -> . BoolExpr AND BoolExpr
+    (72) BoolExpr -> . BoolExpr OR BoolExpr
+    (73) BoolExpr -> . NOT BoolExpr
+    (74) BoolExpr -> . LPAREN BoolExpr RPAREN
+    (75) BoolExpr -> . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    NOT             shift and go to state 51
+    LPAREN          shift and go to state 52
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    BoolExpr                       shift and go to state 124
+    Expr                           shift and go to state 50
+    Variable                       shift and go to state 54
+    const                          shift and go to state 55
+
+state 100
+
+    (46) closed_for_statement -> FOR . Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (45) open_for_statement -> FOR . Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (19) Variable -> . ID
+
+    ID              shift and go to state 17
+
+    Variable                       shift and go to state 125
+
+state 101
+
+    (71) BoolExpr -> BoolExpr AND BoolExpr .
+    (71) BoolExpr -> BoolExpr . AND BoolExpr
+    (72) BoolExpr -> BoolExpr . OR BoolExpr
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    THEN            reduce using rule 71 (BoolExpr -> BoolExpr AND BoolExpr .)
+    DO              reduce using rule 71 (BoolExpr -> BoolExpr AND BoolExpr .)
+    RPAREN          reduce using rule 71 (BoolExpr -> BoolExpr AND BoolExpr .)
+    AND             shift and go to state 74
+    OR              shift and go to state 75
+
+  ! AND             [ reduce using rule 71 (BoolExpr -> BoolExpr AND BoolExpr .) ]
+  ! OR              [ reduce using rule 71 (BoolExpr -> BoolExpr AND BoolExpr .) ]
+
+
+state 102
+
+    (72) BoolExpr -> BoolExpr OR BoolExpr .
+    (71) BoolExpr -> BoolExpr . AND BoolExpr
+    (72) BoolExpr -> BoolExpr . OR BoolExpr
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    THEN            reduce using rule 72 (BoolExpr -> BoolExpr OR BoolExpr .)
+    DO              reduce using rule 72 (BoolExpr -> BoolExpr OR BoolExpr .)
+    RPAREN          reduce using rule 72 (BoolExpr -> BoolExpr OR BoolExpr .)
+    AND             shift and go to state 74
+    OR              shift and go to state 75
+
+  ! AND             [ reduce using rule 72 (BoolExpr -> BoolExpr OR BoolExpr .) ]
+  ! OR              [ reduce using rule 72 (BoolExpr -> BoolExpr OR BoolExpr .) ]
+
+
+state 103
+
+    (65) BoolExpr -> Expr LT Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    THEN            reduce using rule 65 (BoolExpr -> Expr LT Expr .)
+    AND             reduce using rule 65 (BoolExpr -> Expr LT Expr .)
+    OR              reduce using rule 65 (BoolExpr -> Expr LT Expr .)
+    DO              reduce using rule 65 (BoolExpr -> Expr LT Expr .)
+    RPAREN          reduce using rule 65 (BoolExpr -> Expr LT Expr .)
+    PLUS            shift and go to state 82
+    MINUS           shift and go to state 83
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+
+state 104
+
+    (66) BoolExpr -> Expr LE Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    THEN            reduce using rule 66 (BoolExpr -> Expr LE Expr .)
+    AND             reduce using rule 66 (BoolExpr -> Expr LE Expr .)
+    OR              reduce using rule 66 (BoolExpr -> Expr LE Expr .)
+    DO              reduce using rule 66 (BoolExpr -> Expr LE Expr .)
+    RPAREN          reduce using rule 66 (BoolExpr -> Expr LE Expr .)
+    PLUS            shift and go to state 82
+    MINUS           shift and go to state 83
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+
+state 105
+
+    (67) BoolExpr -> Expr GT Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    THEN            reduce using rule 67 (BoolExpr -> Expr GT Expr .)
+    AND             reduce using rule 67 (BoolExpr -> Expr GT Expr .)
+    OR              reduce using rule 67 (BoolExpr -> Expr GT Expr .)
+    DO              reduce using rule 67 (BoolExpr -> Expr GT Expr .)
+    RPAREN          reduce using rule 67 (BoolExpr -> Expr GT Expr .)
+    PLUS            shift and go to state 82
+    MINUS           shift and go to state 83
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+
+state 106
+
+    (68) BoolExpr -> Expr GE Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    THEN            reduce using rule 68 (BoolExpr -> Expr GE Expr .)
+    AND             reduce using rule 68 (BoolExpr -> Expr GE Expr .)
+    OR              reduce using rule 68 (BoolExpr -> Expr GE Expr .)
+    DO              reduce using rule 68 (BoolExpr -> Expr GE Expr .)
+    RPAREN          reduce using rule 68 (BoolExpr -> Expr GE Expr .)
+    PLUS            shift and go to state 82
+    MINUS           shift and go to state 83
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+
+state 107
+
+    (69) BoolExpr -> Expr EQ Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    THEN            reduce using rule 69 (BoolExpr -> Expr EQ Expr .)
+    AND             reduce using rule 69 (BoolExpr -> Expr EQ Expr .)
+    OR              reduce using rule 69 (BoolExpr -> Expr EQ Expr .)
+    DO              reduce using rule 69 (BoolExpr -> Expr EQ Expr .)
+    RPAREN          reduce using rule 69 (BoolExpr -> Expr EQ Expr .)
+    PLUS            shift and go to state 82
+    MINUS           shift and go to state 83
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+
+state 108
+
+    (70) BoolExpr -> Expr NE Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    THEN            reduce using rule 70 (BoolExpr -> Expr NE Expr .)
+    AND             reduce using rule 70 (BoolExpr -> Expr NE Expr .)
+    OR              reduce using rule 70 (BoolExpr -> Expr NE Expr .)
+    DO              reduce using rule 70 (BoolExpr -> Expr NE Expr .)
+    RPAREN          reduce using rule 70 (BoolExpr -> Expr NE Expr .)
+    PLUS            shift and go to state 82
+    MINUS           shift and go to state 83
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+
+state 109
+
+    (55) Expr -> Expr PLUS Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    LT              reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    LE              reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    GT              reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    GE              reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    EQ              reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    NE              reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    PLUS            reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    MINUS           reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    THEN            reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    AND             reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    OR              reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    DO              reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    RPAREN          reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    END             reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    SEMICOLON       reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    ELSE            reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    TO              reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    DOWNTO          reduce using rule 55 (Expr -> Expr PLUS Expr .)
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+  ! TIMES           [ reduce using rule 55 (Expr -> Expr PLUS Expr .) ]
+  ! DIVIDE          [ reduce using rule 55 (Expr -> Expr PLUS Expr .) ]
+  ! PLUS            [ shift and go to state 82 ]
+  ! MINUS           [ shift and go to state 83 ]
+
+
+state 110
+
+    (56) Expr -> Expr MINUS Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    LT              reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    LE              reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    GT              reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    GE              reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    EQ              reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    NE              reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    PLUS            reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    MINUS           reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    THEN            reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    AND             reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    OR              reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    DO              reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    RPAREN          reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    END             reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    SEMICOLON       reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    ELSE            reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    TO              reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    DOWNTO          reduce using rule 56 (Expr -> Expr MINUS Expr .)
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+  ! TIMES           [ reduce using rule 56 (Expr -> Expr MINUS Expr .) ]
+  ! DIVIDE          [ reduce using rule 56 (Expr -> Expr MINUS Expr .) ]
+  ! PLUS            [ shift and go to state 82 ]
+  ! MINUS           [ shift and go to state 83 ]
+
+
+state 111
+
+    (57) Expr -> Expr TIMES Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    LT              reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    LE              reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    GT              reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    GE              reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    EQ              reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    NE              reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    PLUS            reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    MINUS           reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    TIMES           reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    DIVIDE          reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    THEN            reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    AND             reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    OR              reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    DO              reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    RPAREN          reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    END             reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    SEMICOLON       reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    ELSE            reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    TO              reduce using rule 57 (Expr -> Expr TIMES Expr .)
+    DOWNTO          reduce using rule 57 (Expr -> Expr TIMES Expr .)
+
+  ! PLUS            [ shift and go to state 82 ]
+  ! MINUS           [ shift and go to state 83 ]
+  ! TIMES           [ shift and go to state 84 ]
+  ! DIVIDE          [ shift and go to state 85 ]
+
+
+state 112
+
+    (58) Expr -> Expr DIVIDE Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    LT              reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    LE              reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    GT              reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    GE              reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    EQ              reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    NE              reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    PLUS            reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    MINUS           reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    TIMES           reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    DIVIDE          reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    THEN            reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    AND             reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    OR              reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    DO              reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    RPAREN          reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    END             reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    SEMICOLON       reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    ELSE            reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    TO              reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+    DOWNTO          reduce using rule 58 (Expr -> Expr DIVIDE Expr .)
+
+  ! PLUS            [ shift and go to state 82 ]
+  ! MINUS           [ shift and go to state 83 ]
+  ! TIMES           [ shift and go to state 84 ]
+  ! DIVIDE          [ shift and go to state 85 ]
+
+
+state 113
+
+    (74) BoolExpr -> LPAREN BoolExpr RPAREN .
+
+    THEN            reduce using rule 74 (BoolExpr -> LPAREN BoolExpr RPAREN .)
+    AND             reduce using rule 74 (BoolExpr -> LPAREN BoolExpr RPAREN .)
+    OR              reduce using rule 74 (BoolExpr -> LPAREN BoolExpr RPAREN .)
+    DO              reduce using rule 74 (BoolExpr -> LPAREN BoolExpr RPAREN .)
+    RPAREN          reduce using rule 74 (BoolExpr -> LPAREN BoolExpr RPAREN .)
+
+
+state 114
+
+    (59) Expr -> LPAREN Expr RPAREN .
+
+    LT              reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    LE              reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    GT              reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    GE              reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    EQ              reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    NE              reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    PLUS            reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    MINUS           reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    TIMES           reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    DIVIDE          reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    THEN            reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    AND             reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    OR              reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    DO              reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    RPAREN          reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    END             reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    SEMICOLON       reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    ELSE            reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    TO              reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+    DOWNTO          reduce using rule 59 (Expr -> LPAREN Expr RPAREN .)
+
+
+state 115
+
+    (59) Expr -> LPAREN Expr . RPAREN
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    RPAREN          shift and go to state 114
+    PLUS            shift and go to state 82
+    MINUS           shift and go to state 83
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+
+state 116
+
+    (43) open_while_statement -> WHILE BoolExpr DO open_statement .
+
+    END             reduce using rule 43 (open_while_statement -> WHILE BoolExpr DO open_statement .)
+    SEMICOLON       reduce using rule 43 (open_while_statement -> WHILE BoolExpr DO open_statement .)
+
+
+state 117
+
+    (44) closed_while_statement -> WHILE BoolExpr DO closed_statement .
+
+    END             reduce using rule 44 (closed_while_statement -> WHILE BoolExpr DO closed_statement .)
+    SEMICOLON       reduce using rule 44 (closed_while_statement -> WHILE BoolExpr DO closed_statement .)
+    ELSE            reduce using rule 44 (closed_while_statement -> WHILE BoolExpr DO closed_statement .)
+
+
+state 118
+
+    (45) open_for_statement -> FOR Variable ASSIGNMENT initial_value . direction final_value DO open_statement
+    (46) closed_for_statement -> FOR Variable ASSIGNMENT initial_value . direction final_value DO closed_statement
+    (49) direction -> . TO
+    (50) direction -> . DOWNTO
+
+    TO              shift and go to state 127
+    DOWNTO          shift and go to state 128
+
+    direction                      shift and go to state 126
+
+state 119
+
+    (47) initial_value -> Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    TO              reduce using rule 47 (initial_value -> Expr .)
+    DOWNTO          reduce using rule 47 (initial_value -> Expr .)
+    PLUS            shift and go to state 82
+    MINUS           shift and go to state 83
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+
+state 120
+
+    (10) ArrayDefState -> TYPE arrayName EQ ARRAY LBRAC . index_list RBRAC OF Type
+    (12) index_list -> . index_list COMMA index
+    (13) index_list -> . index
+    (14) index -> . startIndex DOTDOT endIndex
+    (20) startIndex -> . const
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    index_list                     shift and go to state 129
+    index                          shift and go to state 130
+    startIndex                     shift and go to state 131
+    const                          shift and go to state 132
+
+state 121
+
+    (42) closed_if_statement -> IF BoolExpr . THEN closed_statement ELSE closed_statement
+    (40) open_if_statement -> IF BoolExpr . THEN Statement
+    (41) open_if_statement -> IF BoolExpr . THEN closed_statement ELSE open_statement
+    (71) BoolExpr -> BoolExpr . AND BoolExpr
+    (72) BoolExpr -> BoolExpr . OR BoolExpr
+
+    THEN            shift and go to state 133
+    AND             shift and go to state 74
+    OR              shift and go to state 75
+
+
+state 122
+
+    (41) open_if_statement -> IF BoolExpr THEN closed_statement ELSE . open_statement
+    (42) closed_if_statement -> IF BoolExpr THEN closed_statement ELSE . closed_statement
+    (26) open_statement -> . label COLON non_labeled_open_statement
+    (27) open_statement -> . non_labeled_open_statement
+    (28) closed_statement -> . label COLON non_labeled_closed_statement
+    (29) closed_statement -> . non_labeled_closed_statement
+    (54) label -> . DIGSEQ
+    (30) non_labeled_open_statement -> . open_if_statement
+    (31) non_labeled_open_statement -> . open_while_statement
+    (32) non_labeled_open_statement -> . open_for_statement
+    (33) non_labeled_closed_statement -> . assignment_statement
+    (34) non_labeled_closed_statement -> . compound_statement
+    (35) non_labeled_closed_statement -> . closed_if_statement
+    (36) non_labeled_closed_statement -> . closed_while_statement
+    (37) non_labeled_closed_statement -> . closed_for_statement
+    (38) non_labeled_closed_statement -> . goto_statement
+    (39) non_labeled_closed_statement -> . empty
+    (40) open_if_statement -> . IF BoolExpr THEN Statement
+    (41) open_if_statement -> . IF BoolExpr THEN closed_statement ELSE open_statement
+    (43) open_while_statement -> . WHILE BoolExpr DO open_statement
+    (45) open_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (51) assignment_statement -> . Variable ASSIGNMENT Expr
+    (52) compound_statement -> . BEGIN StateList END
+    (42) closed_if_statement -> . IF BoolExpr THEN closed_statement ELSE closed_statement
+    (44) closed_while_statement -> . WHILE BoolExpr DO closed_statement
+    (46) closed_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (53) goto_statement -> . GOTO label
+    (76) empty -> .
+    (19) Variable -> . ID
+
+    DIGSEQ          shift and go to state 25
+    IF              shift and go to state 36
+    WHILE           shift and go to state 37
+    FOR             shift and go to state 38
+    BEGIN           shift and go to state 10
+    GOTO            shift and go to state 40
+    END             reduce using rule 76 (empty -> .)
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    ELSE            reduce using rule 76 (empty -> .)
+    ID              shift and go to state 17
+
+    closed_statement               shift and go to state 134
+    open_statement                 shift and go to state 135
+    label                          shift and go to state 22
+    non_labeled_open_statement     shift and go to state 23
+    non_labeled_closed_statement   shift and go to state 24
+    open_if_statement              shift and go to state 26
+    open_while_statement           shift and go to state 27
+    open_for_statement             shift and go to state 28
+    assignment_statement           shift and go to state 29
+    compound_statement             shift and go to state 30
+    closed_if_statement            shift and go to state 31
+    closed_while_statement         shift and go to state 32
+    closed_for_statement           shift and go to state 33
+    goto_statement                 shift and go to state 34
+    empty                          shift and go to state 35
+    Variable                       shift and go to state 39
+
+state 123
+
+    (28) closed_statement -> label COLON . non_labeled_closed_statement
+    (26) open_statement -> label COLON . non_labeled_open_statement
+    (33) non_labeled_closed_statement -> . assignment_statement
+    (34) non_labeled_closed_statement -> . compound_statement
+    (35) non_labeled_closed_statement -> . closed_if_statement
+    (36) non_labeled_closed_statement -> . closed_while_statement
+    (37) non_labeled_closed_statement -> . closed_for_statement
+    (38) non_labeled_closed_statement -> . goto_statement
+    (39) non_labeled_closed_statement -> . empty
+    (30) non_labeled_open_statement -> . open_if_statement
+    (31) non_labeled_open_statement -> . open_while_statement
+    (32) non_labeled_open_statement -> . open_for_statement
+    (51) assignment_statement -> . Variable ASSIGNMENT Expr
+    (52) compound_statement -> . BEGIN StateList END
+    (42) closed_if_statement -> . IF BoolExpr THEN closed_statement ELSE closed_statement
+    (44) closed_while_statement -> . WHILE BoolExpr DO closed_statement
+    (46) closed_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (53) goto_statement -> . GOTO label
+    (76) empty -> .
+    (40) open_if_statement -> . IF BoolExpr THEN Statement
+    (41) open_if_statement -> . IF BoolExpr THEN closed_statement ELSE open_statement
+    (43) open_while_statement -> . WHILE BoolExpr DO open_statement
+    (45) open_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (19) Variable -> . ID
+
+    BEGIN           shift and go to state 10
+    IF              shift and go to state 95
+    WHILE           shift and go to state 99
+    FOR             shift and go to state 100
+    GOTO            shift and go to state 40
+    ELSE            reduce using rule 76 (empty -> .)
+    END             reduce using rule 76 (empty -> .)
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    ID              shift and go to state 17
+
+    non_labeled_closed_statement   shift and go to state 72
+    non_labeled_open_statement     shift and go to state 71
+    assignment_statement           shift and go to state 29
+    compound_statement             shift and go to state 30
+    closed_if_statement            shift and go to state 31
+    closed_while_statement         shift and go to state 32
+    closed_for_statement           shift and go to state 33
+    goto_statement                 shift and go to state 34
+    empty                          shift and go to state 35
+    open_if_statement              shift and go to state 26
+    open_while_statement           shift and go to state 27
+    open_for_statement             shift and go to state 28
+    Variable                       shift and go to state 39
+
+state 124
+
+    (44) closed_while_statement -> WHILE BoolExpr . DO closed_statement
+    (43) open_while_statement -> WHILE BoolExpr . DO open_statement
+    (71) BoolExpr -> BoolExpr . AND BoolExpr
+    (72) BoolExpr -> BoolExpr . OR BoolExpr
+
+    DO              shift and go to state 136
+    AND             shift and go to state 74
+    OR              shift and go to state 75
+
+
+state 125
+
+    (46) closed_for_statement -> FOR Variable . ASSIGNMENT initial_value direction final_value DO closed_statement
+    (45) open_for_statement -> FOR Variable . ASSIGNMENT initial_value direction final_value DO open_statement
+
+    ASSIGNMENT      shift and go to state 137
+
+
+state 126
+
+    (45) open_for_statement -> FOR Variable ASSIGNMENT initial_value direction . final_value DO open_statement
+    (46) closed_for_statement -> FOR Variable ASSIGNMENT initial_value direction . final_value DO closed_statement
+    (48) final_value -> . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Variable                       shift and go to state 54
+    final_value                    shift and go to state 138
+    Expr                           shift and go to state 139
+    const                          shift and go to state 55
+
+state 127
+
+    (49) direction -> TO .
+
+    LPAREN          reduce using rule 49 (direction -> TO .)
+    MINUS           reduce using rule 49 (direction -> TO .)
+    ID              reduce using rule 49 (direction -> TO .)
+    INT_NUMBER      reduce using rule 49 (direction -> TO .)
+    REAL_NUMBER     reduce using rule 49 (direction -> TO .)
+
+
+state 128
+
+    (50) direction -> DOWNTO .
+
+    LPAREN          reduce using rule 50 (direction -> DOWNTO .)
+    MINUS           reduce using rule 50 (direction -> DOWNTO .)
+    ID              reduce using rule 50 (direction -> DOWNTO .)
+    INT_NUMBER      reduce using rule 50 (direction -> DOWNTO .)
+    REAL_NUMBER     reduce using rule 50 (direction -> DOWNTO .)
+
+
+state 129
+
+    (10) ArrayDefState -> TYPE arrayName EQ ARRAY LBRAC index_list . RBRAC OF Type
+    (12) index_list -> index_list . COMMA index
+
+    RBRAC           shift and go to state 140
+    COMMA           shift and go to state 141
+
+
+state 130
+
+    (13) index_list -> index .
+
+    RBRAC           reduce using rule 13 (index_list -> index .)
+    COMMA           reduce using rule 13 (index_list -> index .)
+
+
+state 131
+
+    (14) index -> startIndex . DOTDOT endIndex
+
+    DOTDOT          shift and go to state 142
+
+
+state 132
+
+    (20) startIndex -> const .
+
+    DOTDOT          reduce using rule 20 (startIndex -> const .)
+
+
+state 133
+
+    (42) closed_if_statement -> IF BoolExpr THEN . closed_statement ELSE closed_statement
+    (40) open_if_statement -> IF BoolExpr THEN . Statement
+    (41) open_if_statement -> IF BoolExpr THEN . closed_statement ELSE open_statement
+    (28) closed_statement -> . label COLON non_labeled_closed_statement
+    (29) closed_statement -> . non_labeled_closed_statement
+    (24) Statement -> . open_statement
+    (25) Statement -> . closed_statement
+    (54) label -> . DIGSEQ
+    (33) non_labeled_closed_statement -> . assignment_statement
+    (34) non_labeled_closed_statement -> . compound_statement
+    (35) non_labeled_closed_statement -> . closed_if_statement
+    (36) non_labeled_closed_statement -> . closed_while_statement
+    (37) non_labeled_closed_statement -> . closed_for_statement
+    (38) non_labeled_closed_statement -> . goto_statement
+    (39) non_labeled_closed_statement -> . empty
+    (26) open_statement -> . label COLON non_labeled_open_statement
+    (27) open_statement -> . non_labeled_open_statement
+    (51) assignment_statement -> . Variable ASSIGNMENT Expr
+    (52) compound_statement -> . BEGIN StateList END
+    (42) closed_if_statement -> . IF BoolExpr THEN closed_statement ELSE closed_statement
+    (44) closed_while_statement -> . WHILE BoolExpr DO closed_statement
+    (46) closed_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (53) goto_statement -> . GOTO label
+    (76) empty -> .
+    (30) non_labeled_open_statement -> . open_if_statement
+    (31) non_labeled_open_statement -> . open_while_statement
+    (32) non_labeled_open_statement -> . open_for_statement
+    (19) Variable -> . ID
+    (40) open_if_statement -> . IF BoolExpr THEN Statement
+    (41) open_if_statement -> . IF BoolExpr THEN closed_statement ELSE open_statement
+    (43) open_while_statement -> . WHILE BoolExpr DO open_statement
+    (45) open_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+
+    DIGSEQ          shift and go to state 25
+    BEGIN           shift and go to state 10
+    IF              shift and go to state 95
+    WHILE           shift and go to state 99
+    FOR             shift and go to state 100
+    GOTO            shift and go to state 40
+    ELSE            reduce using rule 76 (empty -> .)
+    END             reduce using rule 76 (empty -> .)
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    ID              shift and go to state 17
+
+    closed_statement               shift and go to state 143
+    Statement                      shift and go to state 96
+    open_statement                 shift and go to state 20
+    label                          shift and go to state 98
+    non_labeled_closed_statement   shift and go to state 24
+    assignment_statement           shift and go to state 29
+    compound_statement             shift and go to state 30
+    closed_if_statement            shift and go to state 31
+    closed_while_statement         shift and go to state 32
+    closed_for_statement           shift and go to state 33
+    goto_statement                 shift and go to state 34
+    empty                          shift and go to state 35
+    non_labeled_open_statement     shift and go to state 23
+    Variable                       shift and go to state 39
+    open_if_statement              shift and go to state 26
+    open_while_statement           shift and go to state 27
+    open_for_statement             shift and go to state 28
+
+state 134
+
+    (42) closed_if_statement -> IF BoolExpr THEN closed_statement ELSE closed_statement .
+
+    END             reduce using rule 42 (closed_if_statement -> IF BoolExpr THEN closed_statement ELSE closed_statement .)
+    SEMICOLON       reduce using rule 42 (closed_if_statement -> IF BoolExpr THEN closed_statement ELSE closed_statement .)
+    ELSE            reduce using rule 42 (closed_if_statement -> IF BoolExpr THEN closed_statement ELSE closed_statement .)
+
+
+state 135
+
+    (41) open_if_statement -> IF BoolExpr THEN closed_statement ELSE open_statement .
+
+    END             reduce using rule 41 (open_if_statement -> IF BoolExpr THEN closed_statement ELSE open_statement .)
+    SEMICOLON       reduce using rule 41 (open_if_statement -> IF BoolExpr THEN closed_statement ELSE open_statement .)
+
+
+state 136
+
+    (44) closed_while_statement -> WHILE BoolExpr DO . closed_statement
+    (43) open_while_statement -> WHILE BoolExpr DO . open_statement
+    (28) closed_statement -> . label COLON non_labeled_closed_statement
+    (29) closed_statement -> . non_labeled_closed_statement
+    (26) open_statement -> . label COLON non_labeled_open_statement
+    (27) open_statement -> . non_labeled_open_statement
+    (54) label -> . DIGSEQ
+    (33) non_labeled_closed_statement -> . assignment_statement
+    (34) non_labeled_closed_statement -> . compound_statement
+    (35) non_labeled_closed_statement -> . closed_if_statement
+    (36) non_labeled_closed_statement -> . closed_while_statement
+    (37) non_labeled_closed_statement -> . closed_for_statement
+    (38) non_labeled_closed_statement -> . goto_statement
+    (39) non_labeled_closed_statement -> . empty
+    (30) non_labeled_open_statement -> . open_if_statement
+    (31) non_labeled_open_statement -> . open_while_statement
+    (32) non_labeled_open_statement -> . open_for_statement
+    (51) assignment_statement -> . Variable ASSIGNMENT Expr
+    (52) compound_statement -> . BEGIN StateList END
+    (42) closed_if_statement -> . IF BoolExpr THEN closed_statement ELSE closed_statement
+    (44) closed_while_statement -> . WHILE BoolExpr DO closed_statement
+    (46) closed_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (53) goto_statement -> . GOTO label
+    (76) empty -> .
+    (40) open_if_statement -> . IF BoolExpr THEN Statement
+    (41) open_if_statement -> . IF BoolExpr THEN closed_statement ELSE open_statement
+    (43) open_while_statement -> . WHILE BoolExpr DO open_statement
+    (45) open_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (19) Variable -> . ID
+
+    DIGSEQ          shift and go to state 25
+    BEGIN           shift and go to state 10
+    IF              shift and go to state 95
+    WHILE           shift and go to state 99
+    FOR             shift and go to state 100
+    GOTO            shift and go to state 40
+    ELSE            reduce using rule 76 (empty -> .)
+    END             reduce using rule 76 (empty -> .)
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    ID              shift and go to state 17
+
+    closed_statement               shift and go to state 117
+    open_statement                 shift and go to state 116
+    label                          shift and go to state 98
+    non_labeled_closed_statement   shift and go to state 24
+    non_labeled_open_statement     shift and go to state 23
+    assignment_statement           shift and go to state 29
+    compound_statement             shift and go to state 30
+    closed_if_statement            shift and go to state 31
+    closed_while_statement         shift and go to state 32
+    closed_for_statement           shift and go to state 33
+    goto_statement                 shift and go to state 34
+    empty                          shift and go to state 35
+    open_if_statement              shift and go to state 26
+    open_while_statement           shift and go to state 27
+    open_for_statement             shift and go to state 28
+    Variable                       shift and go to state 39
+
+state 137
+
+    (46) closed_for_statement -> FOR Variable ASSIGNMENT . initial_value direction final_value DO closed_statement
+    (45) open_for_statement -> FOR Variable ASSIGNMENT . initial_value direction final_value DO open_statement
+    (47) initial_value -> . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Variable                       shift and go to state 54
+    initial_value                  shift and go to state 144
+    Expr                           shift and go to state 119
+    const                          shift and go to state 55
+
+state 138
+
+    (45) open_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value . DO open_statement
+    (46) closed_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value . DO closed_statement
+
+    DO              shift and go to state 145
+
+
+state 139
+
+    (48) final_value -> Expr .
+    (55) Expr -> Expr . PLUS Expr
+    (56) Expr -> Expr . MINUS Expr
+    (57) Expr -> Expr . TIMES Expr
+    (58) Expr -> Expr . DIVIDE Expr
+
+    DO              reduce using rule 48 (final_value -> Expr .)
+    PLUS            shift and go to state 82
+    MINUS           shift and go to state 83
+    TIMES           shift and go to state 84
+    DIVIDE          shift and go to state 85
+
+
+state 140
+
+    (10) ArrayDefState -> TYPE arrayName EQ ARRAY LBRAC index_list RBRAC . OF Type
+
+    OF              shift and go to state 146
+
+
+state 141
+
+    (12) index_list -> index_list COMMA . index
+    (14) index -> . startIndex DOTDOT endIndex
+    (20) startIndex -> . const
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    index                          shift and go to state 147
+    startIndex                     shift and go to state 131
+    const                          shift and go to state 132
+
+state 142
+
+    (14) index -> startIndex DOTDOT . endIndex
+    (21) endIndex -> . const
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    endIndex                       shift and go to state 148
+    const                          shift and go to state 149
+
+state 143
+
+    (42) closed_if_statement -> IF BoolExpr THEN closed_statement . ELSE closed_statement
+    (41) open_if_statement -> IF BoolExpr THEN closed_statement . ELSE open_statement
+    (25) Statement -> closed_statement .
+
+    ELSE            shift and go to state 150
+    END             reduce using rule 25 (Statement -> closed_statement .)
+    SEMICOLON       reduce using rule 25 (Statement -> closed_statement .)
+
+
+state 144
+
+    (46) closed_for_statement -> FOR Variable ASSIGNMENT initial_value . direction final_value DO closed_statement
+    (45) open_for_statement -> FOR Variable ASSIGNMENT initial_value . direction final_value DO open_statement
+    (49) direction -> . TO
+    (50) direction -> . DOWNTO
+
+    TO              shift and go to state 127
+    DOWNTO          shift and go to state 128
+
+    direction                      shift and go to state 151
+
+state 145
+
+    (45) open_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO . open_statement
+    (46) closed_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO . closed_statement
+    (26) open_statement -> . label COLON non_labeled_open_statement
+    (27) open_statement -> . non_labeled_open_statement
+    (28) closed_statement -> . label COLON non_labeled_closed_statement
+    (29) closed_statement -> . non_labeled_closed_statement
+    (54) label -> . DIGSEQ
+    (30) non_labeled_open_statement -> . open_if_statement
+    (31) non_labeled_open_statement -> . open_while_statement
+    (32) non_labeled_open_statement -> . open_for_statement
+    (33) non_labeled_closed_statement -> . assignment_statement
+    (34) non_labeled_closed_statement -> . compound_statement
+    (35) non_labeled_closed_statement -> . closed_if_statement
+    (36) non_labeled_closed_statement -> . closed_while_statement
+    (37) non_labeled_closed_statement -> . closed_for_statement
+    (38) non_labeled_closed_statement -> . goto_statement
+    (39) non_labeled_closed_statement -> . empty
+    (40) open_if_statement -> . IF BoolExpr THEN Statement
+    (41) open_if_statement -> . IF BoolExpr THEN closed_statement ELSE open_statement
+    (43) open_while_statement -> . WHILE BoolExpr DO open_statement
+    (45) open_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (51) assignment_statement -> . Variable ASSIGNMENT Expr
+    (52) compound_statement -> . BEGIN StateList END
+    (42) closed_if_statement -> . IF BoolExpr THEN closed_statement ELSE closed_statement
+    (44) closed_while_statement -> . WHILE BoolExpr DO closed_statement
+    (46) closed_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (53) goto_statement -> . GOTO label
+    (76) empty -> .
+    (19) Variable -> . ID
+
+    DIGSEQ          shift and go to state 25
+    IF              shift and go to state 36
+    WHILE           shift and go to state 37
+    FOR             shift and go to state 38
+    BEGIN           shift and go to state 10
+    GOTO            shift and go to state 40
+    END             reduce using rule 76 (empty -> .)
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    ELSE            reduce using rule 76 (empty -> .)
+    ID              shift and go to state 17
+
+    Variable                       shift and go to state 39
+    open_statement                 shift and go to state 152
+    closed_statement               shift and go to state 153
+    label                          shift and go to state 22
+    non_labeled_open_statement     shift and go to state 23
+    non_labeled_closed_statement   shift and go to state 24
+    open_if_statement              shift and go to state 26
+    open_while_statement           shift and go to state 27
+    open_for_statement             shift and go to state 28
+    assignment_statement           shift and go to state 29
+    compound_statement             shift and go to state 30
+    closed_if_statement            shift and go to state 31
+    closed_while_statement         shift and go to state 32
+    closed_for_statement           shift and go to state 33
+    goto_statement                 shift and go to state 34
+    empty                          shift and go to state 35
+
+state 146
+
+    (10) ArrayDefState -> TYPE arrayName EQ ARRAY LBRAC index_list RBRAC OF . Type
+    (15) Type -> . INTEGER
+    (16) Type -> . REAL
+    (17) Type -> . BOOLEAN
+    (18) Type -> . arrayName
+    (11) arrayName -> . ID
+
+    INTEGER         shift and go to state 64
+    REAL            shift and go to state 65
+    BOOLEAN         shift and go to state 66
+    ID              shift and go to state 45
+
+    arrayName                      shift and go to state 67
+    Type                           shift and go to state 154
+
+state 147
+
+    (12) index_list -> index_list COMMA index .
+
+    RBRAC           reduce using rule 12 (index_list -> index_list COMMA index .)
+    COMMA           reduce using rule 12 (index_list -> index_list COMMA index .)
+
+
+state 148
+
+    (14) index -> startIndex DOTDOT endIndex .
+
+    RBRAC           reduce using rule 14 (index -> startIndex DOTDOT endIndex .)
+    COMMA           reduce using rule 14 (index -> startIndex DOTDOT endIndex .)
+
+
+state 149
+
+    (21) endIndex -> const .
+
+    RBRAC           reduce using rule 21 (endIndex -> const .)
+    COMMA           reduce using rule 21 (endIndex -> const .)
+
+
+state 150
+
+    (42) closed_if_statement -> IF BoolExpr THEN closed_statement ELSE . closed_statement
+    (41) open_if_statement -> IF BoolExpr THEN closed_statement ELSE . open_statement
+    (28) closed_statement -> . label COLON non_labeled_closed_statement
+    (29) closed_statement -> . non_labeled_closed_statement
+    (26) open_statement -> . label COLON non_labeled_open_statement
+    (27) open_statement -> . non_labeled_open_statement
+    (54) label -> . DIGSEQ
+    (33) non_labeled_closed_statement -> . assignment_statement
+    (34) non_labeled_closed_statement -> . compound_statement
+    (35) non_labeled_closed_statement -> . closed_if_statement
+    (36) non_labeled_closed_statement -> . closed_while_statement
+    (37) non_labeled_closed_statement -> . closed_for_statement
+    (38) non_labeled_closed_statement -> . goto_statement
+    (39) non_labeled_closed_statement -> . empty
+    (30) non_labeled_open_statement -> . open_if_statement
+    (31) non_labeled_open_statement -> . open_while_statement
+    (32) non_labeled_open_statement -> . open_for_statement
+    (51) assignment_statement -> . Variable ASSIGNMENT Expr
+    (52) compound_statement -> . BEGIN StateList END
+    (42) closed_if_statement -> . IF BoolExpr THEN closed_statement ELSE closed_statement
+    (44) closed_while_statement -> . WHILE BoolExpr DO closed_statement
+    (46) closed_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (53) goto_statement -> . GOTO label
+    (76) empty -> .
+    (40) open_if_statement -> . IF BoolExpr THEN Statement
+    (41) open_if_statement -> . IF BoolExpr THEN closed_statement ELSE open_statement
+    (43) open_while_statement -> . WHILE BoolExpr DO open_statement
+    (45) open_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (19) Variable -> . ID
+
+    DIGSEQ          shift and go to state 25
+    BEGIN           shift and go to state 10
+    IF              shift and go to state 95
+    WHILE           shift and go to state 99
+    FOR             shift and go to state 100
+    GOTO            shift and go to state 40
+    ELSE            reduce using rule 76 (empty -> .)
+    END             reduce using rule 76 (empty -> .)
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    ID              shift and go to state 17
+
+    closed_statement               shift and go to state 134
+    open_statement                 shift and go to state 135
+    label                          shift and go to state 98
+    non_labeled_closed_statement   shift and go to state 24
+    non_labeled_open_statement     shift and go to state 23
+    assignment_statement           shift and go to state 29
+    compound_statement             shift and go to state 30
+    closed_if_statement            shift and go to state 31
+    closed_while_statement         shift and go to state 32
+    closed_for_statement           shift and go to state 33
+    goto_statement                 shift and go to state 34
+    empty                          shift and go to state 35
+    open_if_statement              shift and go to state 26
+    open_while_statement           shift and go to state 27
+    open_for_statement             shift and go to state 28
+    Variable                       shift and go to state 39
+
+state 151
+
+    (46) closed_for_statement -> FOR Variable ASSIGNMENT initial_value direction . final_value DO closed_statement
+    (45) open_for_statement -> FOR Variable ASSIGNMENT initial_value direction . final_value DO open_statement
+    (48) final_value -> . Expr
+    (55) Expr -> . Expr PLUS Expr
+    (56) Expr -> . Expr MINUS Expr
+    (57) Expr -> . Expr TIMES Expr
+    (58) Expr -> . Expr DIVIDE Expr
+    (59) Expr -> . LPAREN Expr RPAREN
+    (60) Expr -> . MINUS Expr
+    (61) Expr -> . Variable
+    (62) Expr -> . const
+    (19) Variable -> . ID
+    (63) const -> . INT_NUMBER
+    (64) const -> . REAL_NUMBER
+
+    LPAREN          shift and go to state 90
+    MINUS           shift and go to state 53
+    ID              shift and go to state 17
+    INT_NUMBER      shift and go to state 56
+    REAL_NUMBER     shift and go to state 57
+
+    Variable                       shift and go to state 54
+    final_value                    shift and go to state 155
+    Expr                           shift and go to state 139
+    const                          shift and go to state 55
+
+state 152
+
+    (45) open_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement .
+
+    END             reduce using rule 45 (open_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement .)
+    SEMICOLON       reduce using rule 45 (open_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement .)
+
+
+state 153
+
+    (46) closed_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement .
+
+    END             reduce using rule 46 (closed_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement .)
+    SEMICOLON       reduce using rule 46 (closed_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement .)
+    ELSE            reduce using rule 46 (closed_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement .)
+
+
+state 154
+
+    (10) ArrayDefState -> TYPE arrayName EQ ARRAY LBRAC index_list RBRAC OF Type .
+
+    SEMICOLON       reduce using rule 10 (ArrayDefState -> TYPE arrayName EQ ARRAY LBRAC index_list RBRAC OF Type .)
+
+
+state 155
+
+    (46) closed_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value . DO closed_statement
+    (45) open_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value . DO open_statement
+
+    DO              shift and go to state 156
+
+
+state 156
+
+    (46) closed_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO . closed_statement
+    (45) open_for_statement -> FOR Variable ASSIGNMENT initial_value direction final_value DO . open_statement
+    (28) closed_statement -> . label COLON non_labeled_closed_statement
+    (29) closed_statement -> . non_labeled_closed_statement
+    (26) open_statement -> . label COLON non_labeled_open_statement
+    (27) open_statement -> . non_labeled_open_statement
+    (54) label -> . DIGSEQ
+    (33) non_labeled_closed_statement -> . assignment_statement
+    (34) non_labeled_closed_statement -> . compound_statement
+    (35) non_labeled_closed_statement -> . closed_if_statement
+    (36) non_labeled_closed_statement -> . closed_while_statement
+    (37) non_labeled_closed_statement -> . closed_for_statement
+    (38) non_labeled_closed_statement -> . goto_statement
+    (39) non_labeled_closed_statement -> . empty
+    (30) non_labeled_open_statement -> . open_if_statement
+    (31) non_labeled_open_statement -> . open_while_statement
+    (32) non_labeled_open_statement -> . open_for_statement
+    (51) assignment_statement -> . Variable ASSIGNMENT Expr
+    (52) compound_statement -> . BEGIN StateList END
+    (42) closed_if_statement -> . IF BoolExpr THEN closed_statement ELSE closed_statement
+    (44) closed_while_statement -> . WHILE BoolExpr DO closed_statement
+    (46) closed_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+    (53) goto_statement -> . GOTO label
+    (76) empty -> .
+    (40) open_if_statement -> . IF BoolExpr THEN Statement
+    (41) open_if_statement -> . IF BoolExpr THEN closed_statement ELSE open_statement
+    (43) open_while_statement -> . WHILE BoolExpr DO open_statement
+    (45) open_for_statement -> . FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+    (19) Variable -> . ID
+
+    DIGSEQ          shift and go to state 25
+    BEGIN           shift and go to state 10
+    IF              shift and go to state 95
+    WHILE           shift and go to state 99
+    FOR             shift and go to state 100
+    GOTO            shift and go to state 40
+    ELSE            reduce using rule 76 (empty -> .)
+    END             reduce using rule 76 (empty -> .)
+    SEMICOLON       reduce using rule 76 (empty -> .)
+    ID              shift and go to state 17
+
+    Variable                       shift and go to state 39
+    closed_statement               shift and go to state 153
+    open_statement                 shift and go to state 152
+    label                          shift and go to state 98
+    non_labeled_closed_statement   shift and go to state 24
+    non_labeled_open_statement     shift and go to state 23
+    assignment_statement           shift and go to state 29
+    compound_statement             shift and go to state 30
+    closed_if_statement            shift and go to state 31
+    closed_while_statement         shift and go to state 32
+    closed_for_statement           shift and go to state 33
+    goto_statement                 shift and go to state 34
+    empty                          shift and go to state 35
+    open_if_statement              shift and go to state 26
+    open_while_statement           shift and go to state 27
+    open_for_statement             shift and go to state 28
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for AND in state 86 resolved as shift
+WARNING: shift/reduce conflict for OR in state 86 resolved as shift
+WARNING: shift/reduce conflict for RPAREN in state 88 resolved as shift
+WARNING: shift/reduce conflict for AND in state 101 resolved as shift
+WARNING: shift/reduce conflict for OR in state 101 resolved as shift
+WARNING: shift/reduce conflict for AND in state 102 resolved as shift
+WARNING: shift/reduce conflict for OR in state 102 resolved as shift

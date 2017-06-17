@@ -1,0 +1,186 @@
+# 2017.6.17 修改变量定义（VarDef）部分，添加数组文法
+VarDef:         Var VarDefList ';'
+VarDefList:     VarDefList ';' VarDefState | VarDefState
+VarDefState:    VarList ':' Type
+                | ArrayDefState
+VarList:        VarList ',' Variable | Variable
+Type:           Integer | Real | BOOLEAN | arrayName
+Variable:       Iden
+
+ArrayDefState:  TYPE arrayName '=' ARRAY '[' index_list ']' OF Type
+arrayName:      Iden
+index_list:     index_list ',' index | index
+index:          startIndex '.''.' endIndex
+startIndex:     Const
+endIndex:       Const
+
+--------------------------------------------------------------------------------------
+
+ProgDef:     program Iden ';' SubProg '.'
+SubProg:     VarDef compound_statement
+
+VarDef:      Var VarDefList ';'
+VarDefList:  VarDefList ';' VarDefState | VarDefState
+VarDefState: VarList ':' Type
+VarList:     VarList ',' Variable | Variable
+Type:        Integer | Real
+Variable:    Iden
+
+StateList : StateList ';' Statement | Statement
+
+Statement : open_statement
+          | closed_statement
+
+open_statement : label COLON non_labeled_open_statement
+               | non_labeled_open_statement
+
+closed_statement : label COLON non_labeled_closed_statement
+                 | non_labeled_closed_statement
+
+non_labeled_open_statement : open_if_statement
+                           | open_while_statement
+                           | open_for_statement
+
+non_labeled_closed_statement : assignment_statement
+                             | compound_statement
+                             | closed_if_statement
+                             | closed_while_statement
+                             | closed_for_statement
+                             | goto_statement
+                             | case_statement   [暂未实现]
+                             | empty
+
+open_if_statement   : IF BoolExpr THEN Statement
+                    | IF BoolExpr THEN closed_statement ELSE open_statement
+closed_if_statement : IF BoolExpr THEN closed_statement ELSE closed_statement
+
+open_while_statement   : WHILE BoolExpr DO open_statement
+closed_while_statement : WHILE BoolExpr DO closed_statement
+
+open_for_statement   : FOR Variable ASSIGNMENT initial_value direction final_value DO open_statement
+closed_for_statement : FOR Variable ASSIGNMENT initial_value direction final_value DO closed_statement
+
+initial_value : Expr
+final_value : Expr
+direction : TO
+          | DOWNTO
+
+assignment_statement : Variable ASSIGNMENT Expr
+
+compound_statement : BEGIN StateList END
+
+goto_statement : GOTO label
+label : DIGSEQ
+
+Expr:       Expr'+'Expr | Expr'-'Expr | Expr'*'Expr
+            | Expr'/'Expr | '('Expr')' | '-' Expr %prec UMINUS
+            | Variable | Const
+Const:      IntNo | RealNo
+
+BoolExpr:    Expr RelationOp Expr | BoolExpr And BoolExpr | BoolExpr Or BoolExpr
+            | Not BoolExpr | '(' BoolExpr ')'
+            | Expr
+RelationOp:  '<' | '>' | '=' | GE | NE | LE
+
+
+
+ProgDef:     program Iden ';' SubProg '.'
+SubProg:     VarDef CompState
+
+VarDef:	     Var VarDefList ';'
+VarDefList:  VarDefList ';' VarDefState | VarDefState
+VarDefState: VarList ':' Type
+			| TYPE arrayName '=' ARRAY '[' index_list ']' OF Type
+VarList:     VarList ',' Variable | Variable
+Type:        Integer | Real | BOOLEAN | arrayName
+Variable:    Iden
+
+arrayName:	 Iden
+index_list: index_list ',' index | index
+index:		startIndex '.''.' endIndex
+startIndex: Const
+endIndex:	Const
+
+StateList:   S_L Statement | Statement
+S_L:         StateList ';'
+Statement:   AsignState | ISE Statement | IBT Statement
+            | WBD Statement | CompState
+CompState:   Begin StateList End
+AsignState:  Variable':''='Expr
+ISE:         IBT Statement Else
+IBT:         If BoolExpr Then
+WBD:         while BoolExpr Do Statement
+
+Expr:        Expr'+'Expr | Expr'-'Expr | Expr'*'Expr
+        	| Expr'/'Expr | '('Expr')' | '-' Expr %prec UMINUS
+        	| Variable | Const
+Const:	     IntNo | RealNo
+
+BoolExpr:    Expr RelationOp Expr | BoolExpr And | BoolExpr Or
+        	| Not BoolExpr | '(' BoolExpr ')'
+RelationOp:  '<' | '>' | '=' | GE | NE | LE
+
+
+
+# ----------------------------- version 1 ----------------------------------
+
+Prog -> program id semicolon SubProg
+Subprog -> VarDecal begin StatementList end fullstop
+
+VarDecal -> var VarDecalList semicolon
+VarDecalList -> VarList colon type
+				| VarList colon type semicolon VarDecalList
+VarList -> id
+		   | id comma VarList
+
+StatementList -> Statement
+				 | Statement semicolon StatementList
+Statement -> AssignStat
+			 | ConStat
+			 | WhileStat
+			 | CompStat
+AssignStat -> id assign ArithExp
+ConStat -> if RatExp then Statement else Statement
+WhileStat -> while RatExp do Statement
+CompStat-> 
+
+# --------------------------------------------------------------------------
+
+
+# ----------------------------- version 0 ----------------------------------
+program		  → stmt-sequence
+stmt-sequence →	stmt-sequence;statement
+			  	|statement
+
+[语句]
+statement→if-stmt|repeat-stmt|assign-stmt|read-stmt|write-stmt
+
+[if语句]
+if-stmt→if exp then stmt-sequence end
+		|if exp then stmt-sequence else stmt-sequence end
+
+[循环语句]
+repeat-stmt→repeat stmt-sequence until exp
+
+[赋值语句]
+assign-stmt→identifier:=exp
+
+[read语句和write语句]
+read-stmt→read identifier
+write-stmt→write exp
+
+[表达式exp]
+exp→simple-exp comparison-op simple-exp|simple-exp
+comparison-op→<|=
+simple-exp→simple-exp addop term|term
+addop→+|-
+term→term mulop factor|factor
+mulop→*|/
+factor→(exp)|number|identifier
+number→digit|digit digit-str
+digit-str→digit|digit digit-str
+identifier→letter|letter letter-digit
+letter-digit→letter|digit|letter letter-digit|digit letter-digit
+digit→0|1|2|3|4|5|6|7|8|9
+letter→a|b|...|z|A|B|...|Z
+# --------------------------------------------------------------------------
