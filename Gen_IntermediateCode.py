@@ -62,6 +62,14 @@ class AssignIC(IC):
         self.unusePos = '#' # '#'表示该位置没用
         self.leftValue = ''
 
+class LoadImmediate(IC):
+    '''加载立即数'''
+    def __init__(self):
+        self.action = 'load'
+        self.immediateNum = None
+        self.thirdPos = '#'    # 不使用
+        self.aimVar = ''
+
 
 class IC_Generator(object):
     '''
@@ -182,7 +190,81 @@ class IC_Generator(object):
                 return
 
             if node.__class__.__name__ == 'ForNode':
-                pass
+                # print("ForNode's children number: ", end = '')
+                # print(len(node.children))
+
+                if node.children[2] == 'to':
+                    print("is a TO type for loop")
+                    loopControlVarName = node.children[0].name  # 循环控制变量
+                    loopStartBoundary = node.children[1]  # 循环初始值
+                    loopEndBoundary = node.children[3]  # 循环终止值
+
+                    # 先生成一个赋值结点
+                    AssignIC_obj = AssignIC()
+                    AssignIC_obj.leftValue = loopControlVarName
+                    AssignIC_obj.rightValue = loopStartBoundary
+                    self.intermediateCodeBuf.append(AssignIC_obj)
+
+                    # 加载立即数,这个立即数就是循环上届loopEndBoundary
+                    LoadI_IC_obj = LoadImmediate()
+                    LoadI_IC_obj.immediateNum = loopEndBoundary
+                    LoadI_IC_obj.aimVar = self.getNewTempVar()
+                    self.intermediateCodeBuf.append(LoadI_IC_obj)
+
+                    # 生成循环判断label
+                    loopJudgeLabel = self.getNewLabelName()
+                    loopJudgeLabelStr = loopJudgeLabel + ':'
+                    self.intermediateCodeBuf.append(loopJudgeLabelStr)
+
+                    # 判断是否到达循环结束上界
+                    GreaterJudge_IC_obj = BinOpIC()
+                    # EqualJudge_IC_obj.action = '=='
+                    GreaterJudge_IC_obj.action = '>'
+                    GreaterJudge_IC_obj.leftOperand = loopControlVarName
+                    GreaterJudge_IC_obj.rightOperand = LoadI_IC_obj.aimVar
+                    GreaterJudge_IC_obj.aimVar = self.getNewTempVar()
+                    self.intermediateCodeBuf.append(GreaterJudge_IC_obj)
+
+                    # 条件跳转
+                    trueLabel = self.getNewLabelName()
+                    falseLabel = self.getNewLabelName()
+                    conditionIC_obj = CondJump_IC()
+                    conditionIC_obj.condition = GreaterJudge_IC_obj.aimVar
+                    conditionIC_obj.trueLabel = trueLabel
+                    conditionIC_obj.falseLabel = falseLabel
+                    self.intermediateCodeBuf.append(conditionIC_obj)
+
+                    # 加入trueLabel
+                    trueLabelStr = trueLabel + ':'
+                    self.intermediateCodeBuf.append(trueLabelStr)
+
+                    # 处理循环体部分
+                    truebody = self.generate(node.children[1])  # 处理while的循环体
+
+                    # 循环体结束之后,做两件事: 递增循环控制变量、加入无条件跳转,跳回到loopJudgeLabel处
+                    
+                    # 递增循环控制变量
+                    AddIC_obj = BinOpIC()
+                    AddIC_obj.action = '+'  # 因为是"to"的类型的for循环
+                    AddIC_obj.leftOperand = loopControlVarName
+                    AddIC_obj.rightOperand = 1  # 递增1
+                    AddIC_obj.aimVar = self.getNewTempVar()
+                    self.intermediateCodeBuf.append(AddIC_obj)
+
+                    # 无条件跳转
+                    unconditionIC_obj = UnCondJump_IC()
+                    unconditionIC_obj.NXQ = loopJudgeLabel  # 跳回到loopJudgeLabel处
+                    self.intermediateCodeBuf.append(unconditionIC_obj)
+
+                    # 加入falseLabel
+                    falseLabelStr = falseLabel + ':'
+                    self.intermediateCodeBuf.append(falseLabelStr)
+
+
+                elif node.children[2] == 'downto':
+                    pass
+
+                return
 
             if node.__class__.__name__ == 'BinaryBoolNode':
                 boolLeft = self.generate(node.children[0])
