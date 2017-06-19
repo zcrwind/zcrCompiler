@@ -1,0 +1,27 @@
+Label1:
+> number 0 T1 
+jc T1 Label2 Label3 
+Label2:
+:= 200 # sum 
+:= 26 # number 
++ sum number T2 
+:= T2 # sum 
+- number 2 T3 
+:= T3 # number 
+= sum 200 T4 
+jc T4 Label4 Label5 
+Label4:
+j_break # # Label3 
+Label5:
+j # # Label6 
+Label6:
+= sum 500 T5 
+jc T5 Label7 Label8 
+Label7:
+j_continue # # Label1 
+Label8:
+j # # Label9 
+Label9:
+:= 300 # sum 
+j # # Label1 
+Label3:

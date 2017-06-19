@@ -443,6 +443,26 @@ class IC_Generator(object):
             else:   # 是字符串(例如: 'Label2:')
                 print(item)
 
+    def storeIC(self):
+        '''将中间代码保存到文件中,为了翻译成汇编'''
+        if len(self.intermediateCodeBuf) == 0:
+            self.generate(self.rootNode)
+        else:
+            outputDir = './output/'
+            IC_File = 'IC.output'   # 保存四元式的文件
+            ICF_path = outputDir + IC_File
+            with open(ICF_path, 'w', encoding = 'utf-8') as IC_F:
+                for item in self.intermediateCodeBuf:
+                    if isinstance(item, IC):
+                        for name, value in vars(item).items():
+                            IC_F.write(str(value))
+                            IC_F.write(' ')
+                            # IC_F.write(' '.join(value))
+                        IC_F.write('\n')
+                    else:
+                        IC_F.write(item + '\n')
+
+
     def getNewTempVar(self):
         self.nextTempVarNo += 1
         return 'T' + str(self.nextTempVarNo)    # 返回新的临时变量字符串
@@ -450,3 +470,4 @@ class IC_Generator(object):
     def getNewLabelName(self):
         self.nextLabelNo += 1
         return 'Label' + str(self.nextLabelNo)  # 返回新的临时Label字符串
+

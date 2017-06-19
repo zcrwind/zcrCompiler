@@ -73,4 +73,5 @@ class Compiler(object):
         rootNode = self.Abstract_Syntax_Tree
         ic_generator_obj = Gen_IntermediateCode.IC_Generator(rootNode)
         ic_generator_obj.print_IC()
+        ic_generator_obj.storeIC()  # 将四元式保存在文件中
 
