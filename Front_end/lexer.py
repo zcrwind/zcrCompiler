@@ -81,6 +81,8 @@ reserved = {
     'for' : 'FOR',
     'to' : 'TO',
     'downto' : 'DOWNTO',
+    'continue' : 'CONTINUE',    # 增加对continue的支持
+    'break' : 'BREAK',          # 增加对break的支持
 }
 
 tokens = part_tokens + list(reserved.values())

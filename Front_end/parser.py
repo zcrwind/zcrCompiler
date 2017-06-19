@@ -19,7 +19,7 @@ precedence = (
 )
 
 from enum import Enum
-statement_type = Enum('statement_type', ('assignStat', 'compoundStat', 'ifStat', 'whileStat', 'forStat', 'gotoStat', 'caseStat'))
+statement_type = Enum('statement_type', ('assignStat', 'compoundStat', 'ifStat', 'whileStat', 'forStat', 'gotoStat', 'caseStat', 'continueStat', 'breakStat'))
 
 def getPosition(p, num):
     line = p.lineno(num)
@@ -265,6 +265,8 @@ def p_endIndex(p):
 #                              | goto_statement
 #                              | case_statement   [暂未实现]
 #                              | empty
+#                              | continue_statement
+#                              | break_statement
 
 # open_if_statement   : IF BoolExpr THEN Statement
 #                     | IF BoolExpr THEN closed_statement ELSE open_statement
@@ -287,6 +289,9 @@ def p_endIndex(p):
 
 # goto_statement : GOTO label
 # label : DIGSEQ
+
+# continue_statement : CONTINUE
+# break_statement : BREAK
 
 # ————————————————————————————————————————————————————————————————————————————————————————————
 
@@ -377,6 +382,24 @@ def p_non_labeled_closed_statement_7(p):
 def p_non_labeled_closed_statement_8(p):
     'non_labeled_closed_statement : case_statement'
     p[0] = NoneLabeledClosedStatementNode(p[1], statement_type.caseStat)
+
+# 增加对continue的文法支持
+def p_non_labeled_closed_statement_9(p):
+    'non_labeled_closed_statement : continue_statement'
+    p[0] = NoneLabeledClosedStatementNode(p[1], statement_type.continueStat)
+
+def p_continue_statement(p):
+    'continue_statement : CONTINUE'
+    p[0] = p[1]
+
+# 增加对break的文法支持
+def p_non_labeled_closed_statement_10(p):
+    'non_labeled_closed_statement : break_statement'
+    p[0] = NoneLabeledClosedStatementNode(p[1], statement_type.breakStat)
+
+def p_break_statement(p):
+    'break_statement : BREAK'
+    p[0] = p[1]
 
 # case_statement : CASE case_index OF case_element_list END
 #                | CASE case_index OF case_element_list ';' END

@@ -29,6 +29,22 @@ class UnCondJump_IC(IC):
         self.thirdPos = '#'
         self.NXQ = None
 
+class breakCondJump(UnCondJump_IC):
+    '''break跳转'''
+    def __init__(self):
+        self.action = 'j_break'
+        self.secondPos = '#'
+        self.thirdPos = '#'
+        self.NXQ = None
+
+class continueCondJump(UnCondJump_IC):
+    '''continue跳转'''
+    def __init__(self):
+        self.action = 'j_continue'
+        self.secondPos = '#'
+        self.thirdPos = '#'
+        self.NXQ = None
+
 # 废弃这种设计
 # class CondJump_IC(IC):
 #     '''条件跳转'''
@@ -139,9 +155,23 @@ class IC_Generator(object):
                 trueLabelStr = trueLabel + ':'
                 self.intermediateCodeBuf.append(trueLabelStr)
                 truebody = self.generate(node.children[1])
-                unconditionIC_obj = UnCondJump_IC()
-                unconditionIC_obj.NXQ = breakLabel
-                self.intermediateCodeBuf.append(unconditionIC_obj)
+                # if isinstance(truebody, continueCondJump):
+                #     print("truebody is the continueCJ")
+                #     print(breakLabel)
+                #     truebody.NXQ = breakLabel
+                #     self.intermediateCodeBuf.append(truebody)
+
+                # unconditionIC_obj = UnCondJump_IC()
+                # unconditionIC_obj.NXQ = breakLabel
+                # self.intermediateCodeBuf.append(unconditionIC_obj)
+
+                # node.children[1]是ifNode的then结点,node.children[2]如果有的话是else部分,但是为了防止越界,写成-1
+                if node.children[1].children[0] != 'continue' and node.children[1].children[0] != 'break' and \
+                   node.children[-1].children[0] != 'continue' and node.children[-1].children[0] != 'break':
+                    print(node.children[0])
+                    unconditionIC_obj = UnCondJump_IC()
+                    unconditionIC_obj.NXQ = breakLabel
+                    self.intermediateCodeBuf.append(unconditionIC_obj)
 
                 # 加入对else的支持
                 if len(node.children) == 3: # 说明是if-then-else语句,如果只是等于2的话,就只是if-then语句
@@ -162,13 +192,17 @@ class IC_Generator(object):
 
             if node.__class__.__name__ == 'WhileNode':
 
-                currentLastIC = self.intermediateCodeBuf[-1]
-                if isinstance(currentLastIC, str):
-                    startJudgeLabelStr = currentLastIC
-                    startJudgeLabel = currentLastIC[0:-1]
-                    # print("the currentLastLabel is: ", end = '')
-                    # print(startJudgeLabelStr)
-                    # self.intermediateCodeBuf.append(startJudgeLabelStr)   # 这里不需要，因为可以直接用之前已经加到intermediateCodeBuf中label字符串
+                localStartNO = len(self.intermediateCodeBuf)
+                # print('localStartNO is %s' % localStartNO)
+
+                if len(self.intermediateCodeBuf) > 0:
+                    currentLastIC = self.intermediateCodeBuf[-1]
+                    if isinstance(currentLastIC, str):
+                        startJudgeLabelStr = currentLastIC
+                        startJudgeLabel = currentLastIC[0:-1]
+                        # print("the currentLastLabel is: ", end = '')
+                        # print(startJudgeLabelStr)
+                        # self.intermediateCodeBuf.append(startJudgeLabelStr)   # 这里不需要，因为可以直接用之前已经加到intermediateCodeBuf中label字符串
                 else:
                     startJudgeLabel = self.getNewLabelName()
                     startJudgeLabelStr = startJudgeLabel + ':'
@@ -197,11 +231,19 @@ class IC_Generator(object):
                 falseLabelStr = falseLabel + ':'
                 self.intermediateCodeBuf.append(falseLabelStr)
 
+                for item in self.intermediateCodeBuf[localStartNO:]:
+                    if item.__class__.__name__ == 'breakCondJump':
+                        item.NXQ = falseLabel   # 跳向循环结束的地方
+                    elif item.__class__.__name__ == 'continueCondJump':
+                        item.NXQ = startJudgeLabel  # 跳向循环开始的地方
+
                 return
 
             if node.__class__.__name__ == 'ForNode':
                 # print("ForNode's children number: ", end = '')
                 # print(len(node.children))
+
+                localStartNO = len(self.intermediateCodeBuf)
 
                 loopControlVarName = node.children[0].name  # 循环控制变量
                 loopStartBoundary = node.children[1]  # 循环初始值
@@ -250,7 +292,7 @@ class IC_Generator(object):
                     self.intermediateCodeBuf.append(trueLabelStr)
 
                     # 处理循环体部分
-                    truebody = self.generate(node.children[1])  # 处理while的循环体
+                    truebody = self.generate(node.children[-1])  # 处理for的循环体
 
                     # 循环体结束之后,做两件事: 递增循环控制变量、加入无条件跳转,跳回到loopJudgeLabel处
                     
@@ -270,6 +312,13 @@ class IC_Generator(object):
                     # 加入falseLabel
                     falseLabelStr = falseLabel + ':'
                     self.intermediateCodeBuf.append(falseLabelStr)
+
+                    # 增加对continue和break的支持
+                    for item in self.intermediateCodeBuf[localStartNO:]:
+                        if item.__class__.__name__ == 'breakCondJump':
+                            item.NXQ = falseLabel   # 跳向循环结束的地方
+                        elif item.__class__.__name__ == 'continueCondJump':
+                            item.NXQ = loopJudgeLabel  # 跳向循环开始的地方
 
 
                 elif node.children[2] == 'downto':
@@ -314,7 +363,7 @@ class IC_Generator(object):
                     self.intermediateCodeBuf.append(trueLabelStr)
 
                     # 处理循环体部分
-                    truebody = self.generate(node.children[1])  # 处理while的循环体
+                    truebody = self.generate(node.children[1])  # 处理for的循环体
 
                     # 循环体结束之后,做两件事: 递增循环控制变量、加入无条件跳转,跳回到loopJudgeLabel处
                     
@@ -365,7 +414,20 @@ class IC_Generator(object):
                     self.generate(child)
                 return  # 这里也一定要加上！
 
-            # if node
+            # 增加对continue的支持
+            if node == 'continue':
+                # print("is continue")
+                continue_IC_obj = continueCondJump()
+                continue_IC_obj.NXQ = '?'
+                self.intermediateCodeBuf.append(continue_IC_obj)
+                return continue_IC_obj
+
+            if node == 'break':
+                # print("is break")
+                break_IC_obj = breakCondJump()
+                break_IC_obj.NXQ = '?'
+                self.intermediateCodeBuf.append(break_IC_obj)
+                return break_IC_obj
 
         if isinstance(node, AST.Node):
             for child in node.children:

@@ -1,3 +1,20 @@
+# 2017.6.19 增加对break,continue的支持
+non_labeled_closed_statement : assignment_statement
+                             | compound_statement
+                             | closed_if_statement
+                             | closed_while_statement
+                             | closed_for_statement
+                             | goto_statement
+                             | case_statement   [暂未实现]
+                             | empty
+                             | continue_statement
+                             | break_statement
+
+continue_statement : CONTINUE
+break_statement : BREAK
+
+
+
 # 2017.6.17 增加对函数定义的支持
 SubProg:     VarDef function_definition compound_statement
 
@@ -23,7 +40,7 @@ case_element   : case_constant ':' Statement
 case_constant  : Const
 
 
-# 2017.6.17 修改变量定义（VarDef）部分，添加数组文法
+# 2017.6.17 修改变量定义（VarDef）部分，添加数组定义文法
 VarDef:         Var VarDefList ';'
 VarDefList:     VarDefList ';' VarDefState | VarDefState
 VarDefState:    VarList ':' Type
