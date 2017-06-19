@@ -143,7 +143,43 @@ class IC_Generator(object):
 
 
             if node.__class__.__name__ == 'WhileNode':
-                pass
+
+                currentLastIC = self.intermediateCodeBuf[-1]
+                if isinstance(currentLastIC, str):
+                    startJudgeLabelStr = currentLastIC
+                    startJudgeLabel = currentLastIC[0:-1]
+                    # print("the currentLastLabel is: ", end = '')
+                    # print(startJudgeLabelStr)
+                    # self.intermediateCodeBuf.append(startJudgeLabelStr)   # 这里不需要，因为可以直接用之前已经加到intermediateCodeBuf中label字符串
+                else:
+                    startJudgeLabel = self.getNewLabelName()
+                    startJudgeLabelStr = startJudgeLabel + ':'
+                    self.intermediateCodeBuf.append(startJudgeLabelStr)    # 只在这里加就行
+
+                condition = self.generate(node.children[0])
+
+                trueLabel = self.getNewLabelName()
+                falseLabel = self.getNewLabelName()
+                # breakLabel = self.getNewLabelName()
+
+                conditionIC_obj = CondJump_IC()
+                conditionIC_obj.condition = condition
+                conditionIC_obj.trueLabel = trueLabel
+                conditionIC_obj.falseLabel = falseLabel
+                self.intermediateCodeBuf.append(conditionIC_obj)
+
+                trueLabelStr = trueLabel + ':'
+                self.intermediateCodeBuf.append(trueLabelStr)
+                truebody = self.generate(node.children[1])  # 处理while的循环体
+
+                unconditionIC_obj = UnCondJump_IC()
+                unconditionIC_obj.NXQ = startJudgeLabel
+                self.intermediateCodeBuf.append(unconditionIC_obj)
+
+                falseLabelStr = falseLabel + ':'
+                self.intermediateCodeBuf.append(falseLabelStr)
+
+                return
 
             if node.__class__.__name__ == 'ForNode':
                 pass
