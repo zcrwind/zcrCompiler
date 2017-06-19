@@ -65,13 +65,14 @@ class ProgramNode(Node):
         return "ProgDef"
 
 class SubProgNode(Node):
-    def __init__(self, VarDef, CompState):
+    def __init__(self, VarDef, function_definition, CompState):
         self.varDef = VarDef
+        self.function_definition = function_definition
         self.compState = CompState
 
     @property
     def children(self):
-        return [self.varDef, self.compState]
+        return [self.varDef, self.function_definition, self.compState]
 
     def __str__(self):
         return "SubProg"
@@ -397,6 +398,35 @@ class UnaryBoolNode(Node):
 
     def __str__(self):
         return "Unary_Bool_Operation"
+
+class FuncDefinitionNode(Node):
+    def __init__(self, function_heading, function_block):
+        self.func_heading = function_heading
+        self.func_body = function_block
+
+    @property
+    def children(self):
+        return [self.func_heading, self.func_body]
+
+    def __str__(self):
+        return "function_definition"
+
+class FuncHeadingNode(Node):
+    def __init__(self, funcName, return_type, parameter_list = None):
+        self.funcName = funcName
+        self.return_type = return_type
+        # if parameter_list is not None:
+        #     self.parameter_list = parameter_list
+        self.parameter_list = parameter_list
+
+    @property
+    def children(self):
+        return [self.funcName, self.return_type, self.parameter_list]
+
+    def __str__(self):
+        return "function_heading"
+
+
 
 # class StatementNode(Node):
 #     def __init__(self, AsignState = None, CompState = None, ISE = None, IBT = None, WBD = None, Statement = None):

@@ -52,6 +52,9 @@ def main():
     print("semantics_analyze begin:")
     compilerObj.semantics_analyze()
 
+    print("the Intermedia Codes are:")
+    compilerObj.gen_intermedia_code()
+
 
 if __name__ == '__main__':
     main()

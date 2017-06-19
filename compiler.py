@@ -9,6 +9,7 @@ from Front_end import parser
 from Front_end import AST_Dumper
 from Front_end import Symbol_table
 from Front_end import semantics_Analyze
+import Gen_IntermediateCode
 
 class Compiler(object):
     def __init__(self, sourceFileName):
@@ -67,4 +68,9 @@ class Compiler(object):
         semantics_analyze_obj = semantics_Analyze.SemanticsAnalyze(rootNode, symbol_table)
         semantics_analyze_obj.analyze()
         semantics_analyze_obj.print_newSymbolTable()
+
+    def gen_intermedia_code(self):
+        rootNode = self.Abstract_Syntax_Tree
+        ic_generator_obj = Gen_IntermediateCode.IC_Generator(rootNode)
+        ic_generator_obj.print_IC()
 

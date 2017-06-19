@@ -4,11 +4,15 @@ var i, j, k: integer;
 // var color: real;
 begin
 	i := -7;
-	k := i + 1;
+	k := i*9 + 1;
 	// p := 404;
-	if (i <= 20) then i := i + 1;
+	if (i <= 20)
+	then
+	begin
+		i := i + 1;
+	end;
 
-	while number > 0 do
+	while (number > 0) do
 	begin
 	   sum := 200;
 	   number := 26;

@@ -2,6 +2,6 @@ program zcrProgram;
 var i, k: integer;
 begin
 	i := 5;
-	// k := 3;
+	k := 3 + 4;
 	// i := i + k;
 end.

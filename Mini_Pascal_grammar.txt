@@ -1,9 +1,22 @@
+# 2017.6.17 增加对函数定义的支持
+SubProg:     VarDef function_definition compound_statement
+
+function_definition : function_heading ';' function_block
+                    | empty
+function_heading    : FUNCTION funcName COLON return_type
+                    | FUNCTION funcName parameter_list COLON return_type
+parameter_list      : '(' VarDefList ')'
+funcName            : Iden
+return_type         : Type
+function_block      : compound_statement
+
+
 # 2017.6.17 增加对case语句的支持
 
 case_statement : CASE case_index OF case_element_list END
-			   | CASE case_index OF case_element_list SEMICOLON END
+               | CASE case_index OF case_element_list SEMICOLON END
 
-case_index 	   : Expr
+case_index     : Expr
 
 case_element_list: case_element_list ';' case_element | case_element
 case_element   : case_constant ':' Statement
@@ -99,19 +112,19 @@ RelationOp:  '<' | '>' | '=' | GE | NE | LE
 ProgDef:     program Iden ';' SubProg '.'
 SubProg:     VarDef CompState
 
-VarDef:	     Var VarDefList ';'
+VarDef:      Var VarDefList ';'
 VarDefList:  VarDefList ';' VarDefState | VarDefState
 VarDefState: VarList ':' Type
-			| TYPE arrayName '=' ARRAY '[' index_list ']' OF Type
+            | TYPE arrayName '=' ARRAY '[' index_list ']' OF Type
 VarList:     VarList ',' Variable | Variable
 Type:        Integer | Real | BOOLEAN | arrayName
 Variable:    Iden
 
-arrayName:	 Iden
+arrayName:   Iden
 index_list: index_list ',' index | index
-index:		startIndex '.''.' endIndex
+index:      startIndex '.''.' endIndex
 startIndex: Const
-endIndex:	Const
+endIndex:   Const
 
 StateList:   S_L Statement | Statement
 S_L:         StateList ';'
@@ -124,12 +137,12 @@ IBT:         If BoolExpr Then
 WBD:         while BoolExpr Do Statement
 
 Expr:        Expr'+'Expr | Expr'-'Expr | Expr'*'Expr
-        	| Expr'/'Expr | '('Expr')' | '-' Expr %prec UMINUS
-        	| Variable | Const
-Const:	     IntNo | RealNo
+            | Expr'/'Expr | '('Expr')' | '-' Expr %prec UMINUS
+            | Variable | Const
+Const:       IntNo | RealNo
 
 BoolExpr:    Expr RelationOp Expr | BoolExpr And | BoolExpr Or
-        	| Not BoolExpr | '(' BoolExpr ')'
+            | Not BoolExpr | '(' BoolExpr ')'
 RelationOp:  '<' | '>' | '=' | GE | NE | LE
 
 
@@ -141,16 +154,16 @@ Subprog -> VarDecal begin StatementList end fullstop
 
 VarDecal -> var VarDecalList semicolon
 VarDecalList -> VarList colon type
-				| VarList colon type semicolon VarDecalList
+                | VarList colon type semicolon VarDecalList
 VarList -> id
-		   | id comma VarList
+           | id comma VarList
 
 StatementList -> Statement
-				 | Statement semicolon StatementList
+                 | Statement semicolon StatementList
 Statement -> AssignStat
-			 | ConStat
-			 | WhileStat
-			 | CompStat
+             | ConStat
+             | WhileStat
+             | CompStat
 AssignStat -> id assign ArithExp
 ConStat -> if RatExp then Statement else Statement
 WhileStat -> while RatExp do Statement
@@ -160,16 +173,16 @@ CompStat->
 
 
 # ----------------------------- version 0 ----------------------------------
-program		  → stmt-sequence
-stmt-sequence →	stmt-sequence;statement
-			  	|statement
+program       → stmt-sequence
+stmt-sequence → stmt-sequence;statement
+                |statement
 
 [语句]
 statement→if-stmt|repeat-stmt|assign-stmt|read-stmt|write-stmt
 
 [if语句]
 if-stmt→if exp then stmt-sequence end
-		|if exp then stmt-sequence else stmt-sequence end
+        |if exp then stmt-sequence else stmt-sequence end
 
 [循环语句]
 repeat-stmt→repeat stmt-sequence until exp
