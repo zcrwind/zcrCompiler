@@ -127,7 +127,7 @@ class IC_Generator(object):
 
                 trueLabel = self.getNewLabelName()  # 为真跳转向的位置
                 falseLabel = self.getNewLabelName() # 为假跳转向的位置
-                breakLabel = self.getNewLabelName() # 分支结束之后的跳转位置
+                breakLabel = self.getNewLabelName() # 分支结束之后的跳转位置(就是if-then或if-then-else结束之后的跳转位置)
                 
                 conditionIC_obj = CondJump_IC()
                 conditionIC_obj.condition = condition
@@ -143,7 +143,17 @@ class IC_Generator(object):
                 unconditionIC_obj.NXQ = breakLabel
                 self.intermediateCodeBuf.append(unconditionIC_obj)
 
-                # print(breakLabel + ':')     # 为之后显示的四元式序列标记breakLabel
+                # 加入对else的支持
+                if len(node.children) == 3: # 说明是if-then-else语句,如果只是等于2的话,就只是if-then语句
+                    falseLabelStr = falseLabel + ':'
+                    self.intermediateCodeBuf.append(falseLabelStr)
+                    falsebody = self.generate(node.children[-1])    # else部分
+                    unconditionIC_obj = UnCondJump_IC()
+                    unconditionIC_obj.NXQ = breakLabel
+                    self.intermediateCodeBuf.append(unconditionIC_obj)
+
+
+                # print("breakLabel is: " + breakLabel + ':')     # 为之后显示的四元式序列标记breakLabel
                 breakLabelStr = breakLabel + ':'
                 self.intermediateCodeBuf.append(breakLabelStr)
 
@@ -193,11 +203,12 @@ class IC_Generator(object):
                 # print("ForNode's children number: ", end = '')
                 # print(len(node.children))
 
+                loopControlVarName = node.children[0].name  # 循环控制变量
+                loopStartBoundary = node.children[1]  # 循环初始值
+                loopEndBoundary = node.children[3]  # 循环终止值
+
                 if node.children[2] == 'to':
-                    print("is a TO type for loop")
-                    loopControlVarName = node.children[0].name  # 循环控制变量
-                    loopStartBoundary = node.children[1]  # 循环初始值
-                    loopEndBoundary = node.children[3]  # 循环终止值
+                    # print("is a TO type for loop")
 
                     # 先生成一个赋值结点
                     AssignIC_obj = AssignIC()
@@ -262,7 +273,67 @@ class IC_Generator(object):
 
 
                 elif node.children[2] == 'downto':
-                    pass
+                    # print("is a TO type for loop")
+
+                    # 先生成一个赋值结点
+                    AssignIC_obj = AssignIC()
+                    AssignIC_obj.leftValue = loopControlVarName
+                    AssignIC_obj.rightValue = loopStartBoundary
+                    self.intermediateCodeBuf.append(AssignIC_obj)
+
+                    # 加载立即数,这个立即数就是循环上届loopEndBoundary
+                    LoadI_IC_obj = LoadImmediate()
+                    LoadI_IC_obj.immediateNum = loopEndBoundary
+                    LoadI_IC_obj.aimVar = self.getNewTempVar()
+                    self.intermediateCodeBuf.append(LoadI_IC_obj)
+
+                    # 生成循环判断label
+                    loopJudgeLabel = self.getNewLabelName()
+                    loopJudgeLabelStr = loopJudgeLabel + ':'
+                    self.intermediateCodeBuf.append(loopJudgeLabelStr)
+
+                    # 判断是否到达循环结束上界
+                    GreaterJudge_IC_obj = BinOpIC()
+                    GreaterJudge_IC_obj.action = '<'
+                    GreaterJudge_IC_obj.leftOperand = loopControlVarName
+                    GreaterJudge_IC_obj.rightOperand = LoadI_IC_obj.aimVar
+                    GreaterJudge_IC_obj.aimVar = self.getNewTempVar()
+                    self.intermediateCodeBuf.append(GreaterJudge_IC_obj)
+
+                    # 条件跳转
+                    trueLabel = self.getNewLabelName()
+                    falseLabel = self.getNewLabelName()
+                    conditionIC_obj = CondJump_IC()
+                    conditionIC_obj.condition = GreaterJudge_IC_obj.aimVar
+                    conditionIC_obj.trueLabel = trueLabel
+                    conditionIC_obj.falseLabel = falseLabel
+                    self.intermediateCodeBuf.append(conditionIC_obj)
+
+                    # 加入trueLabel
+                    trueLabelStr = trueLabel + ':'
+                    self.intermediateCodeBuf.append(trueLabelStr)
+
+                    # 处理循环体部分
+                    truebody = self.generate(node.children[1])  # 处理while的循环体
+
+                    # 循环体结束之后,做两件事: 递增循环控制变量、加入无条件跳转,跳回到loopJudgeLabel处
+                    
+                    # 递增循环控制变量
+                    AddIC_obj = BinOpIC()
+                    AddIC_obj.action = '-'  # 因为是"downto"的类型的for循环
+                    AddIC_obj.leftOperand = loopControlVarName
+                    AddIC_obj.rightOperand = 1  # 递减1
+                    AddIC_obj.aimVar = self.getNewTempVar()
+                    self.intermediateCodeBuf.append(AddIC_obj)
+
+                    # 无条件跳转
+                    unconditionIC_obj = UnCondJump_IC()
+                    unconditionIC_obj.NXQ = loopJudgeLabel  # 跳回到loopJudgeLabel处
+                    self.intermediateCodeBuf.append(unconditionIC_obj)
+
+                    # 加入falseLabel
+                    falseLabelStr = falseLabel + ':'
+                    self.intermediateCodeBuf.append(falseLabelStr)
 
                 return
 
@@ -317,86 +388,3 @@ class IC_Generator(object):
     def getNewLabelName(self):
         self.nextLabelNo += 1
         return 'Label' + str(self.nextLabelNo)  # 返回新的临时Label字符串
-
-
-# class IC_Generator(object):
-#     '''
-#     生成四元式
-#     '''
-#     def __init__(self, rootNode):
-#         self.rootNode = rootNode
-#         self.intermediateCodeBuf = list()
-
-#     def generate(self, node):
-#         if node is not None and isinstance(node, AST.Node):
-#             if node.__class__.__name__ == 'AssignmentNode':
-                
-#                 if isinstance(node.children[-1], int) or isinstance(node.children[-1], float):
-#                     IC_obj.rightValue = node.children[-1]
-#                 elif node.children[-1].__class__.__name__ == 'Binary_Operation':
-#                     IC_obj.rightValue = '@' + str(self.generate(node.children[-1]))
-#                 elif node.children[-1].__class__.__name__ == 'Unary_Operation':
-#                     if isinstance(node.children[-1].children[-1], int) or isinstance(node.children[-1].children[-1], float):
-#                         if node.children[-1].children[0] == '-':
-#                             IC_obj.rightValue = -node.children[-1].children[-1]
-#                     else:
-#                         IC_obj.rightValue = '-@' + str(self.generate(node.children[-1].children[-1]))
-                
-#                 IC_obj = AssignIC()
-#                 self.intermediateCodeBuf.append(IC_obj)
-#                 # IC_obj.NXQ = len(self.intermediateCodeBuf)    # 暂时设为当前的四元式的编号
-#                 # IC_obj.NXQ = '?'
-#                 IC_obj.action = ':='
-#                 IC_obj.leftValue = node.children[0].name
-
-
-#             if node.__class__.__name__ == 'Binary_Operation':
-#                 IC_obj = BinOpIC()
-#                 self.intermediateCodeBuf.append(IC_obj)
-#                 currentNO = len(self.intermediateCodeBuf)
-
-#                 # 左结点
-#                 if node.children[0].__class__.__name__ == 'IdNode':
-#                     IC_obj.leftOperand = node.children[0].name
-#                 elif isinstance(node.children[0], int) or isinstance(node.children[0], float):
-#                     IC_obj.leftOperand = node.children[0]
-#                 elif node.children[0].__class__.__name__ == 'Binary_Operation':
-#                     IC_obj.NXQ = '@' + str(self.generate(node.children[0]))
-#                 elif node.children[0].__class__.__name__ == 'Unary_Operation':
-#                     if isinstance(node.children[0].children[-1], int) or isinstance(node.children[0].children[-1], float):
-#                         if node.children[0].children[0] == '-':
-#                             IC_obj.rightValue = -node.children[0].children[-1]
-#                     else:
-#                         IC_obj.rightValue = '@' + str(self.generate(node.children[0].children[-1]))
-                
-#                 # 中间结点
-#                 IC_obj.action = node.children[1]
-
-#                 # 右结点
-#                 if node.children[-1].__class__.__name__ == 'IdNode':
-#                     IC_obj.leftOperand = node.children[-1].name
-#                 elif isinstance(node.children[-1], int) or isinstance(node.children[-1], float):
-#                     IC_obj.leftOperand = node.children[-1]
-#                 elif node.children[-1].__class__.__name__ == 'Binary_Operation':
-#                     IC_obj.NXQ = '@' + str(self.generate(node.children[-1]))
-#                 elif node.children[-1].__class__.__name__ == 'Unary_Operation':
-#                     if isinstance(node.children[-1].children[-1], int) or isinstance(node.children[-1].children[-1], float):
-#                         if node.children[-1].children[0] == '-':
-#                             IC_obj.rightValue = -node.children[-1].children[-1]
-#                     else:
-#                         IC_obj.rightValue = '@' + str(self.generate(node.children[-1].children[-1]))
-
-#                 return currentNO
-
-#             # if node.__class__.__name__ == 'Unary_Operation':
-#             #   if isinstance(node.children[-1], int) or isinstance(node.children[-1], float):
-#             #       if node.children[0] == '-':
-
-#         if isinstance(node, AST.Node):
-#             for child in node.children:
-#                 self.generate(child)
-
-#     def print_IC(self):
-#         self.generate(self.rootNode)
-#         for IC in self.intermediateCodeBuf:
-#             IC.show()
