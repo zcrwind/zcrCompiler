@@ -9,13 +9,15 @@ from Front_end import parser
 from Front_end import AST_Dumper
 from Front_end import Symbol_table
 from Front_end import semantics_Analyze
-import Gen_IntermediateCode
+import Gen_IntermediateCode as GIC
+import Gen_Assemble
 
 class Compiler(object):
     def __init__(self, sourceFileName):
         self.file = sourceFileName
         self.Abstract_Syntax_Tree = None
         self.symbol_table = None
+        self.intermediaCodeBuf = None    # 为了用ic_generator_obj里面的四元式列表intermediateCodeBuf
 
     def analyze(self):
         lexerObj = lexer.lexer(debug = False)
@@ -71,7 +73,23 @@ class Compiler(object):
 
     def gen_intermedia_code(self):
         rootNode = self.Abstract_Syntax_Tree
-        ic_generator_obj = Gen_IntermediateCode.IC_Generator(rootNode)
+        ic_generator_obj = GIC.IC_Generator(rootNode)
         ic_generator_obj.print_IC()
         ic_generator_obj.storeIC()  # 将四元式保存在文件中
+        self.intermediateCodeBuf = ic_generator_obj.intermediateCodeBuf
 
+    def gen_assemble(self):
+        '''生成汇编代码'''
+
+        # 放弃读取文件的方式来获得四元式
+        # IC_path = './output/IC.output'
+        # with open(IC_path, 'r', encoding = 'utf-8') as ic_f:
+        #     ic_data = ic_f.readlines()
+
+        # print("\nTest read ic file:")
+        # for ic in ic_data:
+        #     print(ic, end = '')
+        print(self.gen_assemble.__doc__)
+        intermediateCodeBuf = self.intermediateCodeBuf
+        assemble_generator = Gen_Assemble.AssembleGenerator(intermediateCodeBuf)
+        assemble_generator.generate()

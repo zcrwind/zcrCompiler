@@ -37,7 +37,7 @@ def getPosition(p, num):
 # ProgDef:     program Iden ';' SubProg '.'
 # SubProg:     VarDef compound_statement
 # 将SubProg改为如下,以支持函数定义:
-# SubProg:     VarDef function_definition compound_statement
+# SubProg:     VarDef label_declaration_part function_definition compound_statement
 
 def p_ProgDef(p):
     'ProgDef : PROGRAM ID SEMICOLON SubProg ENDPOINT'
@@ -45,8 +45,8 @@ def p_ProgDef(p):
     p[0].pos_info = getPosition(p, 0)
 
 def p_SubProg(p):
-    'SubProg : VarDef function_definition compound_statement'
-    p[0] = SubProgNode(p[1], p[2], p[3])
+    'SubProg : VarDef label_declaration_part function_definition compound_statement'
+    p[0] = SubProgNode(p[1], p[2], p[3], p[4])
     p[0].pos_info = getPosition(p, 0)
 
 # *******************************************************************************************
@@ -215,9 +215,32 @@ def p_startIndex(p):
 def p_endIndex(p):
     'endIndex : const'
     p[0] = p[1]
+
 # ================== [变量声明的文法]添加对数组的文法支持(6.17) end ====================
 
+# 增加对goto的文法支持
+# label_declaration_part : LABEL label_list ';'
+#                        | empty
+# label_list : label_list ',' label
+#            | label
+# label : DIGSEQ      ——>已经在goto那部分有了
 
+def p_label_declaration_part_1(p):
+    'label_declaration_part : LABEL label_list SEMICOLON'
+    p[0] = p[1]
+
+def p_label_declaration_part_2(p):
+    'label_declaration_part : empty'
+    pass
+
+def p_label_list_1(p):
+    'label_list : label_list COMMA label'
+    P[0] = LabelListNode(p[3], p[1])
+    p[0].pos_info = getPosition(p, 0)
+
+def p_label_list_2(p):
+    'label_list : label'
+    p[0] = p[1]
 #------------------------- 语句Statement的文法 ------------------------
 
 # ******************* 原始的关于Statement的文法 *******************
@@ -714,6 +737,7 @@ def p_empty(p):
 # SubProg:     VarDef function_definition compound_statement  [在最上面进行修改]
 
 # function_definition : function_heading ';' function_block
+#                     : empty
 # function_heading    : FUNCTION funcName ':' return_type
 #                     | FUNCTION funcName parameter_list ':' return_type
 # parameter_list      : '(' VarDefList ')'

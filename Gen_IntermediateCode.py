@@ -62,6 +62,14 @@ class CondJump_IC(IC):
         self.trueLabel = None
         self.falseLabel = None
 
+class EqualZeroJump_IC(CondJump_IC):
+    '''为零跳转'''
+    def __init__(self):
+        self.action = 'jz'
+        self.condition = None
+        self.trueLabel = None
+        self.falseLabel = None
+
 class BinOpIC(IC):
     '''二元运算'''
     def __init__(self):
@@ -203,6 +211,10 @@ class IC_Generator(object):
                         # print("the currentLastLabel is: ", end = '')
                         # print(startJudgeLabelStr)
                         # self.intermediateCodeBuf.append(startJudgeLabelStr)   # 这里不需要，因为可以直接用之前已经加到intermediateCodeBuf中label字符串
+                    else:
+                        startJudgeLabel = self.getNewLabelName()
+                        startJudgeLabelStr = startJudgeLabel + ':'
+                        self.intermediateCodeBuf.append(startJudgeLabelStr)
                 else:
                     startJudgeLabel = self.getNewLabelName()
                     startJudgeLabelStr = startJudgeLabel + ':'
@@ -428,6 +440,54 @@ class IC_Generator(object):
                 break_IC_obj.NXQ = '?'
                 self.intermediateCodeBuf.append(break_IC_obj)
                 return break_IC_obj
+
+            if node.__class__.__name__ == 'CaseStatementNode':
+                aim_case = self.generate(node.children[0])
+
+                case_element_list = node.children[1]    # case_element_list
+
+                # commonAimVar = self.getNewTempVar()
+                local_1_StartNO = len(self.intermediateCodeBuf)
+                for case_element in case_element_list.children:
+                    IC_obj = BinOpIC()
+                    IC_obj.action = '-'
+                    IC_obj.leftOperand = aim_case
+                    IC_obj.rightOperand = case_element.children[0]
+                    IC_obj.aimVar = self.getNewTempVar()
+                    self.intermediateCodeBuf.append(IC_obj)
+                local_1_EndNO = len(self.intermediateCodeBuf)
+                
+                local_2_StartNO = len(self.intermediateCodeBuf)
+                i = 0
+                for case_element in case_element_list.children:
+                    ez_j_IC_obj = EqualZeroJump_IC()
+                    ez_j_IC_obj.condition = self.intermediateCodeBuf[local_1_StartNO + i].aimVar
+                    ez_j_IC_obj.trueLabel = '?'
+                    ez_j_IC_obj.falseLabel = '#'
+                    i += 1
+                    self.intermediateCodeBuf.append(ez_j_IC_obj)
+
+                local_2_EndNO = len(self.intermediateCodeBuf)
+
+                local_3_StartNO = len(self.intermediateCodeBuf)
+                temp_label_list = list()
+                for case_element in case_element_list.children:
+                    label = self.getNewLabelName()
+                    temp_label_list.append(label)
+                    labelStr = label + ':'
+                    self.intermediateCodeBuf.append(labelStr)
+                    self.generate(case_element.children[1])
+
+                i = 0
+                for item in self.intermediateCodeBuf[local_2_StartNO : local_2_EndNO]:
+                    if item.trueLabel == '?':
+                        item.trueLabel = temp_label_list[i]
+                        i += 1
+                    else:
+                        print("something bad.")
+
+                return
+
 
         if isinstance(node, AST.Node):
             for child in node.children:

@@ -55,6 +55,9 @@ def main():
     print("the Intermedia Codes are:")
     compilerObj.gen_intermedia_code()
 
+    print("the Assembly language is: ")
+    compilerObj.gen_assemble()
+
 
 if __name__ == '__main__':
     main()
